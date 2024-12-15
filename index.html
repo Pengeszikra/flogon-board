@@ -16,8 +16,8 @@
   overflow-hidden
   --bg-[url(../in-hangar.png)]
   --bg-[url(../mid/flogon4344.jpeg)]
-  bg-contain
-  --bg-cover
+  --bg-contain
+  bg-cover
   bg-no-repeat
   bg-center
   relative
@@ -27,13 +27,58 @@
   <button class="
     bg-orange-700 text-white text-2xl
     rounded-xl py-2 px-4 select-none
-  ">next day</button>
+  ">next mission</button>
+
+  <figure id="desk" class="
+    hidden
+    absolute top-0 left-0
+    w-[100vw] h-[100vh]
+    bg-[url(../sheets/sprite-7014.png)]
+  "></figure>
  
   <figure class="
-    absolute w-[20rem] h-[20rem] top-[50%-5rem] left-[50%-5rem]
+    absolute w-[20rem] h-[20rem] 
+    --top-[50%-5rem]
+    --left-[50%-5rem]
+    top-0 right-0
     bg-[url(../sheets/sprite-7014.png)]
     bg-cover
     bg-no-repeat
-  "/>
+    pointer-events-none
+  "></figure>
+
+  <figure id="selector" class="
+    absolute w-[5rem] h-[5rem]
+    outline outline-1 outline-orange-300
+    bg-orange-950/10
+    bg-blend-multiply
+  "></figure>
+
+  <pre id="monitor" class="
+    absolute bottom-0 left-0
+    text-emerald-300
+    w-full h-[2.5rem]
+    p-2
+    bg-black/70
+    select-none pointer-events-none
+  "></pre>
+
+  <article class="
+    absolute 
+    top-[50%-3rem]
+    
+    left-[100vw]
+    whitespace-nowrap
+    min-w-[100vw] text-center
+    text-[3rem] 
+    bg-black/30
+    text-amber-500
+    shadow-black
+    select-none
+    pointer-events-none
+    transition-all
+    duration-500
+    font-bold
+  ">Flogons on the Bridge!</article>
 </body>
 </html>

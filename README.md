@@ -2,17 +2,26 @@
 
 Trading Pioneers Online is a chaotic, hilarious social tabletop game where every player is a space trader chasing fame, fortune, or a decent cup of alien tea. Turns? Forget them! Dive into bite-sized mini-games to haggle, smuggle, and gamble your way to glory while everyone else does their thing. Build shady alliances, outwit rivals, or accidentally start intergalactic wars—it’s all in a day’s work. There’s no downtime here—just pure, unhinged cosmic fun!
 
-![](./webroot/i-got-a-ticket.png)
+## Moments of Flogons 
 
-![](./webroot/in-hangar.png)
-
-![](./webroot/wrong-package.png)
-
-![](./webroot/something-behind-us.png)
-
-![](./webroot/bright-and-bad.png)
-
-![](./webroot/play-asteroid.png)
+Deep Space Mining
+![](./public/mid/flogon4214.jpeg)
+Micro Pirates Raid on docking station
+![](./public/mid/flogon4215.jpeg)
+Terraform of Ice Moon
+![](./public/mid/flogon4216.jpeg)
+Harvesting station
+![](./public/mid/flogon4217.jpeg)
+After street fight
+![](./public/mid/flogon4218.jpeg)
+Two Dose
+![](./public/mid/flogon4219.jpeg)
+Dream Traveling will starting soon!
+![](./public/mid/flogon4220.jpeg)
+I saw a this big ....
+![](./public/mid/flogon4221.jpeg)
+Wellness Pod
+![](./public/mid/flogon4222.jpeg)
 
 ## - webviews
 
@@ -68,3 +77,12 @@ worker-src: 'self', webview.devvit.net, webview-dev.devvit.net, data:, blob:
 report-to: csp
 report-uri: https://w3-reporting-csp.reddit.com/reports
 ```
+
+## Video Generation
+
+Maybe chineese AI video generation will be worth.
+[hailuoai](https://hailuoai.video/create)
+
+WOW! that is very impressive!
+[Flogons floating in the space](https://hailuoai.video/create/324701351598858241)
+[Direct to the video](https://hailuoai.video/share/dOkz0KpoNb3P)
