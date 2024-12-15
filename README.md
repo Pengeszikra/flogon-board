@@ -16,7 +16,39 @@ Trading Pioneers Online is a chaotic, hilarious social tabletop game where every
 
 ## - webviews
 
+```js
+// simple vite config working well
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  build: {
+    outDir: 'webroot',
+    emptyOutDir: true,
+  }
+});
+```
+
 The right solution is webviews!
+
+## Game Rule
+
+- open the app
+- make a few stepp on the table
+- facing some story element
+- finally get a badges, coins, image
+- have option to listen a story of Flogon
+- mem generation ?
+- game animation
+- story animation
+- need to play with a card?
+
+## Flogon abilities:
+- dream travel with quantum symmetry
+- shape change
+- item morphose
+- limited time survive near any environment
+- good sense of humor
+- don't waste their time to political influence to each other
 
 ## Content Security Policy on Reddit
 
