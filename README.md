@@ -1,45 +1,58 @@
-# T R A D I N G - P I O N E E R S
+# Flogons on the Bridge!
 
-Trading Pioneers Online is a chaotic, hilarious social tabletop game where every player is a space trader chasing fame, fortune, or a decent cup of alien tea. Turns? Forget them! Dive into bite-sized mini-games to haggle, smuggle, and gamble your way to glory while everyone else does their thing. Build shady alliances, outwit rivals, or accidentally start intergalactic wars—it’s all in a day’s work. There’s no downtime here—just pure, unhinged cosmic fun!
+Flogons on the Bridge! is a chaotic, hilarious social tabletop game where every player is a space trader chasing fame, fortune, or a decent cup of alien tea. Turns? Forget them! Dive into bite-sized mini-games to haggle, smuggle, and gamble your way to glory while everyone else does their thing. Build shady alliances, outwit rivals, or accidentally start intergalactic wars—it’s all in a day’s work. There’s no downtime here—just pure, unhinged cosmic fun!
+
+## Who is the Flogons?
+Flogons is a most succesfull space trader in the galaxy.
+Their secret skill give a power to reach even the farest place in the universe.
+Our broader knwoledge is included in this game, after every turn you get a piece of information.
 
 ## Moments of Flogons 
 
 Deep Space Mining
+
 ![](./public/mid/flogon4214.jpeg)
+
 Micro Pirates Raid on docking station
+
 ![](./public/mid/flogon4215.jpeg)
+
 Terraform of Ice Moon
+
 ![](./public/mid/flogon4216.jpeg)
+
 Harvesting station
+
 ![](./public/mid/flogon4217.jpeg)
+
 After street fight
+
 ![](./public/mid/flogon4218.jpeg)
+
 Two Dose
+
 ![](./public/mid/flogon4219.jpeg)
+
 Dream Traveling will starting soon!
+
 ![](./public/mid/flogon4220.jpeg)
+
 I saw a this big ....
+
 ![](./public/mid/flogon4221.jpeg)
+
 Wellness Pod
+
 ![](./public/mid/flogon4222.jpeg)
-
-## - webviews
-
-```js
-// simple vite config working well
-import { defineConfig } from 'vite';
-
-export default defineConfig({
-  build: {
-    outDir: 'webroot',
-    emptyOutDir: true,
-  }
-});
-```
 
 The right solution is webviews!
 
 ## Game Rule
+
+For the maximum profit need to be close the `RUN` score to :: `42`
+Under each step draw one card some help some cause problem, 
+and the profit depend on the solved problem score.
+Which is need to be a 42. If more you are fail. That's all.
 
 - open the app
 - make a few stepp on the table
@@ -58,6 +71,21 @@ The right solution is webviews!
 - limited time survive near any environment
 - good sense of humor
 - don't waste their time to political influence to each other
+
+## - webviews
+
+```js
+// simple vite config working well
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  build: {
+    outDir: 'webroot',
+    emptyOutDir: true,
+  }
+});
+```
+
 
 ## Content Security Policy on Reddit
 

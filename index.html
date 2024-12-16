@@ -4,29 +4,60 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flogon Fleet</title>
-  <script type="module" src="src/main.js"></script>
   <link href="src/style.css" rel="stylesheet" />
+  <!-- <link href="src/marker.css" rel="stylesheet" /> -->
+  <script type="module" src="src/main.js"></script>
+  <!-- <script type="module" src="src/marker.js"></script> -->
 </head>
+<template id="mob">
+  <section class="
+    top-2 left-2
+    absolute w-[5rem] h-[5rem]
+    --bg-purple-700/50
+    outline outline-1 outline-sky-300 outline-dashed
+    pointer-events-none
+    bg-[url(../sheets/sprite-7000.png)]
+  "></section>
+</template>
 <body class="
-  bg-black
+  bg-sky-600
   text-zinc-200
   grid
   place-items-center
   min-w-full min-h-[100vh]
   overflow-hidden
-  --bg-[url(../in-hangar.png)]
-  --bg-[url(../mid/flogon4344.jpeg)]
-  --bg-contain
-  bg-cover
-  bg-no-repeat
-  bg-center
   relative
+  --pointer-events-none
   "
 >
+
+  <figure id="visual-1" class="
+    --bg-contain
+    absolute top-0 left-0
+    min-w-full min-h-[100vh]
+    pointer-events-none select-none
+    bg-transparent
+    bg-cover
+    bg-no-repeat
+    bg-center
+  "></figure>
+
+  <figure id="visual-2" class="
+    --bg-contain
+    absolute top-0 left-0
+    min-w-full min-h-[100vh]
+    pointer-events-none select-none
+    bg-transparent
+    bg-cover
+    bg-no-repeat
+    bg-center
+  "></figure>
+
   <div></div>
   <button class="
-    bg-orange-700 text-white text-2xl
+    bg-sky-700 text-white text-2xl
     rounded-xl py-2 px-4 select-none
+    z-10
   ">next mission</button>
 
   <figure id="desk" class="
@@ -36,27 +67,37 @@
     bg-[url(../sheets/sprite-7014.png)]
   "></figure>
  
-  <figure class="
+  <figure id="sprite-sheet" class="
+    hidden
     absolute w-[20rem] h-[20rem] 
-    --top-[50%-5rem]
-    --left-[50%-5rem]
-    top-0 right-0
+    top-[50%-5rem]
+    left-[50%-5rem]
+    --top-0 --right-0
     bg-[url(../sheets/sprite-7014.png)]
     bg-cover
     bg-no-repeat
-    pointer-events-none
-  "></figure>
-
+    pointer-events-auto
+    outline outline-1 outline-sky-300 outline-dashed
+    --pointer-events-none
+  ">
   <figure id="selector" class="
+    hidden
     absolute w-[5rem] h-[5rem]
     outline outline-1 outline-orange-300
     bg-orange-950/10
     bg-blend-multiply
+    pointer-events-none
   "></figure>
 
+
+</figure>
+
+
   <pre id="monitor" class="
+    hidden
     absolute bottom-0 left-0
     text-emerald-300
+    text-sm
     w-full h-[2.5rem]
     p-2
     bg-black/70
@@ -65,14 +106,14 @@
 
   <article class="
     absolute 
-    top-[50%-3rem]
-    
+    --top-[50%-3rem]
+    top-[0rem]
     left-[100vw]
     whitespace-nowrap
     min-w-[100vw] text-center
     text-[3rem] 
     bg-black/30
-    text-amber-500
+    text-red-600
     shadow-black
     select-none
     pointer-events-none
@@ -80,5 +121,59 @@
     duration-500
     font-bold
   ">Flogons on the Bridge!</article>
+
+  <div id="score" class="
+    absolute
+    top-[50%-3rem]
+    left-[50%-3rem]
+    text-[6rem]
+    text-red-600
+    font-black
+    select-none
+    pointer-events-none
+  ">42</div>
+
+  
+  <!-- <section id="marker" class="
+    w-[70vw]
+    top-0
+    -right-[70vw]
+    m-auto
+    grid
+    grid-cols-1
+    gap-2
+    lg:grid-cols-2
+    absolute
+    transition-all
+    delay-300
+  ">
+    <textarea class="
+      sticky
+      opacity-90
+      resize
+      lg:relative
+      top-0
+      left-0
+      z-10
+      min-h-[1rem]
+      min-w-[100%]
+      bg-zinc-800
+      text-zinc-400
+      focus:outline-none
+      p-8
+      placeholder-zinc-600"
+      placeholder=" - - - markdown editor - - - " spellcheck="false"></textarea>
+    <article class="
+      bg-zinc-900
+      whitespace-pre-wrap
+      px-8
+      min-w-full
+      min-h-screen
+      relative
+    ">
+      <span id="debug-ms" class="hidden absolute top-4 left-4 p-2 rounded-lg bg-neutral-950"></span>
+      <markdown-view source="textarea" />
+    </article>
+  </section> -->
 </body>
 </html>
