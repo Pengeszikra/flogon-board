@@ -6,17 +6,19 @@ const initialState = {
   next: 0,
 }
 
-const selInitState = { 
+const toolInitState = { 
   x: 0,  y: 0,  w: 5,  h: 5,
   sheetIndex: 0,
   shoot: [],
+  m: 14,
+  n: 3,
 };
 
 
 
 const dice = (side = 6) => Math.random() * side + 1 | 0;
 
-const toolRender = ({x, y, w, h}) => {
+const toolRender = ({x, y, w, h, m, n}) => {
   sel.style.left =  `calc(${x}px - ${w/2}rem)`;
   sel.style.top =  `calc(${y}px - ${h/2}rem)`;
   sel.style.width = `${w}rem`;
@@ -27,7 +29,8 @@ const toolRender = ({x, y, w, h}) => {
   frg.style.height = `${h}rem`;
 
   frg.style.backgroundSize = `${w * 4 / ( w/5)}rem ${h * 4 / (h /5)}rem`;
-  frg.style.backgroundPosition = `${(x/-16) + (w/5)}rem ${(y /-16) + (h/5)}rem`;
+  frg.style.backgroundPosition = `${(x/-m) + (w/n)}rem ${(y /-m) + (h/n)}rem`;
+  log({m,n})
 }; 
 
 const storeSprite = () => {
@@ -44,7 +47,7 @@ const render = (state, ...rest) => {
 } 
 
 const state = signal(render)(initialState);
-const tool = signal(toolRender)(selInitState);
+const tool = signal(toolRender)(toolInitState);
 
 globalThis.ss = tool;
 
@@ -136,6 +139,10 @@ document.addEventListener("keydown",
       case "W": return tool.h = (+ tool.h - 1).toFixed(2);
       case "S": return tool.h = (+ tool.h + 1).toFixed(2);
       case "D": return tool.w = (+ tool.w + 1).toFixed(2);
+      case "j": return tool.m ++;
+      case "h": return tool.m --;
+      case "k": return tool.n ++;
+      case "l": return tool.n --;
       case "v": return storeSprite();
     }
   }
