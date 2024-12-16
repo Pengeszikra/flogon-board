@@ -7,36 +7,46 @@ const initialState = {
 }
 
 const toolInitState = { 
-  x: 0,  y: 0,  w: 5,  h: 5,
+  x: 0,  y: 0,
+  w: 5,  h: 5,
   sheetIndex: 0,
   shoot: [],
-  m: 14,
-  n: 3,
+  m: 10,
+  n: 2,
 };
 
-
+const spriteBgImg = index => `url(${spriteSheetList[index]})`;
 
 const dice = (side = 6) => Math.random() * side + 1 | 0;
 
-const toolRender = ({x, y, w, h, m, n}) => {
+const drawSprite = ({x, y, w, h, m, n, sheetIndex}) => frg => {
+  frg.style.width = `${w}rem`;
+  frg.style.height = `${h}rem`;
+  frg.style.backgroundImage = spriteBgImg(sheetIndex);
+  frg.style.backgroundSize = `${w * 4 / ( w/5)}rem ${h * 4 / (h /5)}rem`;
+  frg.style.backgroundPosition = `${(x/-m) + (w/n)}rem ${(y /-m) + (h/n)}rem`;
+}
+
+const toolRender = (tState) => {
+  const {x, y, w, h, m, n, sheetIndex} = tState;
   sel.style.left =  `calc(${x}px - ${w/2}rem)`;
   sel.style.top =  `calc(${y}px - ${h/2}rem)`;
   sel.style.width = `${w}rem`;
   sel.style.height = `${h}rem`;
-  sprite.style.backgroundImage = `url(${spriteSheetList[tool.sheetIndex]})`;
-  
-  frg.style.width = `${w}rem`;
-  frg.style.height = `${h}rem`;
+  sprite.style.backgroundImage = spriteBgImg(tool.sheetIndex);
+  drawSprite(tState)(frg);
 
-  frg.style.backgroundSize = `${w * 4 / ( w/5)}rem ${h * 4 / (h /5)}rem`;
-  frg.style.backgroundPosition = `${(x/-m) + (w/n)}rem ${(y /-m) + (h/n)}rem`;
   log({m,n})
 }; 
 
 const storeSprite = () => {
-  console.log(tool);
-  const {x,y,w,h,sheetIndex} = tool;
-  tool.shoot.push({x,y,w,h,sheetIndex})
+  // console.log(tool);
+  const {x,y,w,h,sheetIndex, shoot} = tool;
+  shoot.push({x,y,w,h,sheetIndex})
+  const frg = fragment("#mob", "#gallery", `frg-${2000 + shoot.length}`);
+  drawSprite(tool)(frg);
+  frg.style.position = "relative";
+
 }
 
 const render = (state, ...rest) => {
@@ -79,13 +89,10 @@ sprite.onmousemove = (e) => {
   if (!drag) return;
   e.preventDefault();
   const {screenX, screenY, clientX, clientY, offsetX, offsetY} = e;
-  log({screenX, screenY, clientX, clientY, offsetX, offsetY});
+  // log({screenX, screenY, clientX, clientY, offsetX, offsetY});
   
   tool.x = offsetX;
   tool.y = offsetY;
-
-  // sel.style.left =  `calc(${offsetX}px - 2.5rem)`
-  // sel.style.top =  `calc(${offsetY}px - 2.5rem)`
 } 
 
 const titleAnim = (goIn) => title.style.left = goIn ? '0' : '100vw' ;
@@ -159,6 +166,5 @@ const addRun = () => state.run += dice(12);
 
 const ts = setInterval(() => state.run ++, 100)
 
-const frg = fragment("#mob", "body", "frg-2200");
-globalThis.frg = frg;
-globalThis.assetList = assetList;
+const frg = fragment("#mob", "#gallery", "frg-2000");
+frg.style.position = 'relative';
