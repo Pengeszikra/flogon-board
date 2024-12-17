@@ -19,6 +19,21 @@
     bg-[url(../sheets/sprite-7000.png)]
   "></section>
 </template>
+<template id="card">
+  <section class="
+    w-[11rem] rounded-xl aspect-[4/7]
+    outline outline-1 outline-sky-500
+    --px-1 
+    --py-3
+    absolute top-0 left-0
+    transition-all duration-500
+    bg-no-repeat
+    transform-style:preserve-3d 
+    pointer-events-auto
+    delay-500
+  "></section>
+</template>
+
 <body class="
   bg-sky-600
   text-zinc-200
@@ -43,6 +58,7 @@
     pointer-events-none select-none
     bg-transparent
     bg-cover
+    --bg-contain
     bg-no-repeat
     bg-center
   "></figure>
@@ -66,10 +82,9 @@
   ">next mission</button>
 
   <figure id="desk" class="
-    hidden
+    --hidden
     absolute top-0 left-0
     w-[100vw] h-[100vh]
-    bg-[url(../sheets/sprite-7014.png)]
   "></figure>
  
   <figure id="sprite-sheet" class="
@@ -137,48 +152,5 @@
     select-none
     pointer-events-none
   ">42</div>
-
-  
-  <!-- <section id="marker" class="
-    w-[70vw]
-    top-0
-    -right-[70vw]
-    m-auto
-    grid
-    grid-cols-1
-    gap-2
-    lg:grid-cols-2
-    absolute
-    transition-all
-    delay-300
-  ">
-    <textarea class="
-      sticky
-      opacity-90
-      resize
-      lg:relative
-      top-0
-      left-0
-      z-10
-      min-h-[1rem]
-      min-w-[100%]
-      bg-zinc-800
-      text-zinc-400
-      focus:outline-none
-      p-8
-      placeholder-zinc-600"
-      placeholder=" - - - markdown editor - - - " spellcheck="false"></textarea>
-    <article class="
-      bg-zinc-900
-      whitespace-pre-wrap
-      px-8
-      min-w-full
-      min-h-screen
-      relative
-    ">
-      <span id="debug-ms" class="hidden absolute top-4 left-4 p-2 rounded-lg bg-neutral-950"></span>
-      <markdown-view source="textarea" />
-    </article>
-  </section> -->
 </body>
 </html>

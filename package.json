@@ -3,7 +3,7 @@
   "name": "flogon-board",
   "author": "Peter Vivo <pengeszikra@gmail.com>",
   "version": "0.0.0",
-  "license": "BSD-3-Clause",
+  "license": "MIT",
   "type": "module",
   "scripts": {
     "build": "vite build",

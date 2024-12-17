@@ -1,9 +1,12 @@
 import { fragment, signal } from './old-bird-soft';
 import {assetList} from './shoot';
 
+
 const initialState = {
   run: 0,
   next: 0,
+  deck: [],
+  ox:0, oy:0, bdrag: false,
 }
 
 const toolInitState = { 
@@ -19,12 +22,19 @@ const spriteBgImg = index => `url(${spriteSheetList[index]})`;
 
 const dice = (side = 6) => Math.random() * side + 1 | 0;
 
-const drawSprite = ({x, y, w, h, m, n, sheetIndex}) => frg => {
+const drawSprite = ({
+  x, y, w, h, 
+  m = toolInitState.m, 
+  n = toolInitState.n, 
+  sheetIndex =0
+}) => (frg) => {
   frg.style.width = `${w}rem`;
   frg.style.height = `${h}rem`;
   frg.style.backgroundImage = spriteBgImg(sheetIndex);
   frg.style.backgroundSize = `${w * 4 / ( w/5)}rem ${h * 4 / (h /5)}rem`;
-  frg.style.backgroundPosition = `${(x/-m) + (w/n)}rem ${(y /-m) + (h/n)}rem`;
+  const pos = `${(x/-m) + (w/n)}rem ${(y /-m) + (h/n)}rem`;
+  // console.log(pos,x, m, w, n);
+  frg.style.backgroundPosition = pos;
 }
 
 const toolRender = (tState) => {
@@ -36,7 +46,7 @@ const toolRender = (tState) => {
   sprite.style.backgroundImage = spriteBgImg(tool.sheetIndex);
   drawSprite(tState)(frg);
 
-  log({m,n})
+  log({m,n, sheetIndex})
 }; 
 
 const storeSprite = () => {
@@ -46,12 +56,12 @@ const storeSprite = () => {
   const frg = fragment("#mob", "#gallery", `frg-${2000 + shoot.length}`);
   drawSprite(tool)(frg);
   frg.style.position = "relative";
-
+  localStorage.setItem('-shoot-', JSON.stringify(shoot));
 }
 
 const render = (state, ...rest) => {
   // console.log(state, ...rest)
-  log(state);
+  // log(state);
   scoreIndicator.innerText = state.run;
   
 } 
@@ -65,7 +75,7 @@ const questImageList = Array(357).fill('../mid/flogon')
   .map((fn, idx) => fn + (4000 + idx) + '.jpeg')
   .sort(_ => Math.random() - 0.5);
 
-  const spriteSheetList = Array(23).fill('../sheets/sprite-')
+  const spriteSheetList = Array(29).fill('../sheets/sprite-')
   .map((fn, idx) => fn + (7000 + idx) + '.png')
 
 let counter = 0;
@@ -76,6 +86,7 @@ const sel = document.getElementById('selector');
 const debug = document.getElementById('monitor');
 const title = document.querySelector('article');
 const nextButton = document.querySelector("button");
+nextButton.classList.add("hidden")
 const scoreIndicator = document.querySelector("#score");
 // const marker = document.querySelector("#marker");
 
@@ -111,7 +122,7 @@ const toggleUI = () => {
   debug.classList.toggle("hidden");
   sel.classList.toggle("hidden");
   visual1.classList.toggle("hidden");
-  nextButton.classList.add("hidden");
+  // nextButton.classList.add("hidden");
   scoreIndicator.classList.add("hidden");
 }
 
@@ -131,11 +142,9 @@ document.addEventListener("keydown",
       case ".": return titleAnim(false);
       case "n": 
         scoreIndicator.classList.remove('hidden');
-        nextButton.classList.remove("hidden");
+        // nextButton.classList.remove("hidden");
         return nextDay();
-      case "z": 
-        clearInterval(ts);
-        return toggleUI();
+      case "z": return toggleUI();
       case "[": return selectSheet(-1);
       case "]": return selectSheet(+1);
       case "a": return tool.w = (+ tool.w - 0.1).toFixed(2);
@@ -162,9 +171,29 @@ const selectSheet = (direction) => {
   tool.sheetIndex = Math.abs(tool.sheetIndex + direction) % spriteSheetList.length;
 }
 
-const addRun = () => state.run += dice(12);
-
-const ts = setInterval(() => state.run ++, 100)
+// const addRun = () => state.run += dice(12);
+// const ts = setInterval(() => state.run ++, 100)
 
 const frg = fragment("#mob", "#gallery", "frg-2000");
 frg.style.position = 'relative';
+
+Array(23).fill(0).map((_, idx) => {
+  const crd = fragment("#card", "#desk", `crd-${9000 + idx}`);
+  drawSprite(assetList[idx])(crd);
+  crd.style.transform = `translateX(${idx * 16 - 16}rem) translateY(22rem) scale(3)`;
+  crd.onclick = () => state.run += dice(9);
+});
+
+
+/** @type {(e:MouseEvent) => void} */
+body.onclick = (e) => {
+  state.bdrag = true;
+  state.bx = e.offsetX;
+  state.by = e.offsetY;
+}
+
+
+
+body.onmouseleave = () => {
+  state.bdrag = false;
+}

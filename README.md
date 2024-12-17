@@ -1,3 +1,27 @@
+## TODO 4 a final `night`
+- rework spritesheet to percentage
+- `implement the game`
+- test the game
+- `make image switch animation`
+- make a table where the player can move on
+- draw the card
+- `create content`
+- side scroll animation
+- connect my program to a `devvit`
+- make some database using
+- redy for commit the release
+- create 1 min `pitch` video
+- `commit` my project on `devpost`
+- make my channel to `public`
+- separate editor from the game code
+- advertise on social platform
+
+## `:: Rule ::`
+For the maximum profit need to be close the RUN score to :: `42`
+Under each step draw one card some help some cause problem.
+The profit depend on the solved problem score.
+Which is need to be a 42. If more you gain more score then it will be fail.
+
 # Flogons on the Bridge!
 
 Flogons on the Bridge! is a chaotic, hilarious social tabletop game where every player is a space trader chasing fame, fortune, or a decent cup of alien tea. Turns? Forget them! Dive into bite-sized mini-games to haggle, smuggle, and gamble your way to glory while everyone else does their thing. Build shady alliances, outwit rivals, or accidentally start intergalactic wars—it’s all in a day’s work. There’s no downtime here—just pure, unhinged cosmic fun!
@@ -24,10 +48,6 @@ Terraform of Ice Moon
 Harvesting station
 
 ![](./public/mid/flogon4217.jpeg)
-
-After street fight
-
-![](./public/mid/flogon4218.jpeg)
 
 Two Dose
 
@@ -71,6 +91,19 @@ Which is need to be a 42. If more you are fail. That's all.
 - limited time survive near any environment
 - good sense of humor
 - don't waste their time to political influence to each other
+- don't use digital money
+
+## Card Set
+
+```js
+// save
+localStorage.setItem('-shoot-', JSON.stringify(shoot));
+```
+
+```js
+// load
+copy(JSON.parse(localStorage.getItem('-shoot-') || '{}'));
+```
 
 ## - webviews
 
@@ -85,7 +118,6 @@ export default defineConfig({
   }
 });
 ```
-
 
 ## Content Security Policy on Reddit
 
