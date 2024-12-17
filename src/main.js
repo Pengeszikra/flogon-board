@@ -1,4 +1,4 @@
-import { fragment, signal } from './old-bird-soft';
+import { fragment, signal, delay } from './old-bird-soft';
 import {assetList} from './shoot';
 import {assets} from './asset';
 
@@ -77,7 +77,7 @@ const questImageList = Array(357).fill('../mid/flogon')
   .map((fn, idx) => fn + (4000 + idx) + '.jpeg')
   .sort(_ => Math.random() - 0.5);
 
-  const spriteSheetList = Array(29).fill('../sheets/sprite-')
+  const spriteSheetList = Array(33).fill('../sheets/sprite-')
   .map((fn, idx) => fn + (7000 + idx) + '.png')
 
 let counter = 0;
@@ -120,16 +120,23 @@ const nextDay = () => {
 };
 
 const toggleUI = () => {
+  frg.classList.toggle("hidden");
   sprite.classList.toggle("hidden");
   debug.classList.toggle("hidden");
   sel.classList.toggle("hidden");
   visual1.classList.toggle("hidden");
   // nextButton.classList.add("hidden");
   scoreIndicator.classList.add("hidden");
+  desk.classList.toggle("hidden");
 }
 
 nextButton.onclick = nextDay;
 nextDay();
+
+/** @type {HTMLElement} */
+document.querySelector("#left-side").onclick = () => tool.scrollSpeed = + 1;
+document.querySelector("#center-area").onclick = () => tool.scrollSpeed = 0;
+document.querySelector("#right-side").onclick = () => tool.scrollSpeed = - 1;
 
 document.addEventListener("keydown", 
   /** @type {(e:KeyboardEvent) => void} */
@@ -162,9 +169,10 @@ document.addEventListener("keydown",
       case "k": return tool.n ++;
       case "l": return tool.n --;
       case "v": return storeSprite();
-      case ";": return tool.scrollSpeed = - 5;
-      case "'": return tool.scrollSpeed = + 5;
+      case ";": return tool.scrollSpeed = + 1;
+      case "'": return tool.scrollSpeed = - 1;
       case "\\": return tool.scrollSpeed = 0;
+      case "o": return cardTryToEscape(dice(state.deck.length-1));
     }
   }
 );
@@ -181,21 +189,53 @@ const selectSheet = (direction) => {
 
 const frg = fragment("#mob-o", "#gallery", "frg-2000");
 frg.style.position = 'relative';
+frg.classList.add("hidden");
 
-Array(23).fill(0).map((_, idx) => {
+state.deck = Array(23).fill(0).map((_, idx) => {
   const crd = fragment("#card", "#desk", `crd-${9000 + idx}`);
   drawSprite(assetList[idx])(crd);
-  crd.style.transform = `translateX(${idx * 16 - 16}rem) translateY(22rem) scale(3)`;
+  const order = idx * 16 - (16 * 12);
+  crd.style.transform = `translateX(${order}rem) translateY(22rem) scale(3)`;
   crd.onclick = () => state.run += dice(9);
+  return [crd, order];
 });
 
+const flyOut = (x) => [
+  `translateX(${x}rem) translateY(22rem) scale(3) rotateX(-50deg) translateZ(-2rem)`,
+  `translateX(${x}rem) translateY(-22rem) scale(3) rotateX(-50deg) translateZ(-2rem)`, 
+  `translateX(${x}rem) translateY(-22rem) scale(3) translateZ(-4rem) rotateX(-60deg)`,
+  `translateX(${x}rem) translateY(-22rem) scale(3) translateZ(20rem) rotateX(-80deg)`,
+  `translateX(${x}rem) translateY(10rem) scale(3) translateZ(20rem) rotateX(-60deg)`,
+  `translateX(${x}rem) translateY(8rem) scale(3) translateZ(20rem) rotateX(-60deg)`,
+  `translateX(${x}rem) translateY(10rem) scale(3) translateZ(20rem) rotateX(-55deg)`,
+  `translateX(${x}rem) translateY(12rem) scale(3) translateZ(20rem) rotateX(-60deg)`,
+  `translateX(${x}rem) translateY(10rem) scale(3) translateZ(20rem) rotateX(-65deg)`,
+  `translateX(${x}rem) translateY(70rem) scale(3) translateZ(-80rem) rotateX(-60deg)`,
+]
+  
 
-assets.map((src, idx) => {
+const cardTryToEscape = async(who) => {
+  /** @type {[HTMLElement, number]} */
+  const [escape, x] = state.deck[who];
+  const sequence = [...flyOut(x)];
+  setInterval(() => {
+  const ani = sequence.shift();
+    escape.style.transition = `transform 300ms linear`;
+    escape.style.transform = ani;
+  }, 300);
+};
+
+[
+  ...assets,
+  ...assets,
+  ...assets,
+  ...assets
+].map((src, idx) => {
   const frg = fragment("#mob", "#desk", `frg-${5000 + idx}`);
   drawSprite(src)(frg);
   frg.style.outline = "none;"
   frg.style.transform = `
-    translateX(${dice(70)-10}rem)
+    translateX(${dice(400)-200}rem)
     translateY(${dice(70)-10}rem)
     translateZ(${dice(10)}rem)
     scale(2)
@@ -212,21 +252,22 @@ const deskMotion = (x) => {
     perspective(60vh)
     translateX(${x}px)
     translateZ(0px)
-    rotateX(${x/2}deg)
+    rotateX(40deg)
     rotateY(0deg)
     rotateZ(0deg)
     scale(.64)
-  `
-  desk.style.transform = trans;
+    `
+    // rotateX(${x/2}deg)
+    desk.style.transform = trans;
 }
 
 globalThis.dm = deskMotion;
 
 const invScroll = setInterval(() => {
   if (!tool.scrollSpeed) return;
-  deskMotion(scroll += tool.scrollSpeed)
-  state.run = scroll;
-}, 20);
+  deskMotion(scroll -= tool.scrollSpeed)
+  state.run = -scroll;
+}, 5);
 
 body.onmouseleave = () => {
   state.bdrag = false;

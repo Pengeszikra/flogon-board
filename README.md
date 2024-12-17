@@ -1,15 +1,16 @@
 ## TODO 4 a final `night`
 - [x] MIT license
-- rework spritesheet to percentage
-- `implement the game`
+- [-] rework spritesheet to percentage
+- [ ] `implement the game` - worst one 
 - test the game
-- `make image switch animation`
-- make a table where the player can move on
-- draw the card
+- `make image switch animation` when change scroll direction then change the image.
+  including treshold and preload.
+- [?] make a table where the player can move on
+- [x] draw the card animation
 - `create content`
-- side scroll animation
+- [x] side scroll animation
 - connect my program to a `devvit`
-- make some database using
+- Try to use a database for something.
 - redy for commit the release
 - create 1 min `pitch` video
 - `commit` my project on `devpost`
@@ -22,6 +23,27 @@ For the maximum profit need to be close the RUN score to :: `42`
 Under each step draw one card some help some cause problem.
 The profit depend on the solved problem score.
 Which is need to be a 42. If more you gain more score then it will be fail.
+
+The goal still same, but instead of startegic tabletop game, this is a 
+decterity based tabletop game. A flogon jumping on a cards, which is represent the 
+table of game, and when second or third time jump a card that card is fly up and
+can be collect if you are lucky enough to catch it.
+But the final score is depend on when you stop it the game and if you able to stop the 
+counter lower up to 42, then you have a extra bonus to your score.
+
+And thats all!
+
+```
+// state.deck[17].style.transform = 
+// animation out
+'translateX(80rem) translateY(22rem) scale(3) rotateX(-50deg) translateZ(-2rem)',
+'translateX(80rem) translateY(-22rem) scale(3) rotateX(-50deg) translateZ(-2rem)', 
+'translateX(80rem) translateY(-22rem) scale(3) translateZ(-4rem) rotateX(-60deg)',
+'translateX(80rem) translateY(-22rem) scale(3) translateZ(20rem) rotateX(-80deg)',
+'translateX(80rem) translateY(10rem) scale(3) translateZ(20rem) rotateX(-60deg)',
+'translateX(80rem) translateY(10rem) scale(3) translateZ(80rem) rotateX(-60deg)',
+
+```
 
 # Flogons on the Bridge!
 

@@ -29,20 +29,22 @@
 <template id="card">
   <section class="
     w-[11rem] rounded-xl aspect-[4/7]
-    outline outline-1 outline-sky-500
+    outline outline-1 outline-zinc-900
     --px-1 
     --py-3
     absolute top-0 left-0
     transition-all duration-500
     bg-no-repeat
     transform-style:preserve-3d 
-    pointer-events-auto
+    --pointer-events-auto
+    pointer-events-none
     delay-500
   "></section>
 </template>
 
 <body class="
-  bg-sky-600
+  --bg-sky-600
+  bg-black
   text-zinc-200
   grid
   place-items-center
@@ -64,10 +66,11 @@
     min-w-full min-h-[100vh]
     pointer-events-none select-none
     bg-transparent
-    bg-cover
-    --bg-contain
+    --bg-cover
+    bg-contain
     bg-no-repeat
-    bg-center
+    --bg-center
+    bg-top
   "></figure>
 
   <figure id="visual-2" class="
@@ -80,6 +83,17 @@
     bg-no-repeat
     bg-center
   "></figure>
+
+  <section class="
+    absolute top-0 left-0
+    min-w-[100vw] min-h-[100vh]
+    select-none
+    grid grid-cols-3 gap-0
+  ">
+    <div id="left-side" class="bg-gradient-to-b from-transparent to-black w-full h-full relative select-none"></div>
+    <div id="center-area" class="bg-gradient-to-b from-transparent to-black w-full h-full select-none"></div>
+    <div id="right-side" class="bg-gradient-to-b from-transparent to-black w-full h-full select-none"></div>
+  </section>
 
   <div></div>
   <button class="
