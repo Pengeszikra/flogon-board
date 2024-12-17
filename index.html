@@ -9,12 +9,19 @@
   <script type="module" src="src/main.js"></script>
   <!-- <script type="module" src="src/marker.js"></script> -->
 </head>
+<template id="mob-o">
+  <section class="
+    top-2 left-2
+    absolute w-[5rem] h-[5rem]
+    outline-1 outline-sky-300 outline-dashed
+    pointer-events-none
+    bg-[url(../sheets/sprite-7000.png)]
+  "></section>
+</template>
 <template id="mob">
   <section class="
     top-2 left-2
     absolute w-[5rem] h-[5rem]
-    --bg-purple-700/50
-    outline outline-1 outline-sky-300 outline-dashed
     pointer-events-none
     bg-[url(../sheets/sprite-7000.png)]
   "></section>
@@ -97,7 +104,7 @@
     bg-cover
     bg-no-repeat
     pointer-events-auto
-    outline outline-1 outline-sky-300 outline-dashed
+    outline-1 outline-sky-300 outline-dashed
     --pointer-events-none
   ">
   <figure id="selector" class="

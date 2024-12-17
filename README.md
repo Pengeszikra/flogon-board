@@ -1,4 +1,5 @@
 ## TODO 4 a final `night`
+- [x] MIT license
 - rework spritesheet to percentage
 - `implement the game`
 - test the game

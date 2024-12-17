@@ -1,12 +1,12 @@
 import { fragment, signal } from './old-bird-soft';
 import {assetList} from './shoot';
+import {assets} from './asset';
 
 
 const initialState = {
   run: 0,
   next: 0,
   deck: [],
-  ox:0, oy:0, bdrag: false,
 }
 
 const toolInitState = { 
@@ -16,7 +16,10 @@ const toolInitState = {
   shoot: [],
   m: 10,
   n: 2,
+  scrollSpeed: 0,
 };
+
+let scroll = 0;
 
 const spriteBgImg = index => `url(${spriteSheetList[index]})`;
 
@@ -38,22 +41,21 @@ const drawSprite = ({
 }
 
 const toolRender = (tState) => {
-  const {x, y, w, h, m, n, sheetIndex} = tState;
+  const {x, y, w, h, m, n, sheetIndex, scrollSpeed} = tState;
   sel.style.left =  `calc(${x}px - ${w/2}rem)`;
   sel.style.top =  `calc(${y}px - ${h/2}rem)`;
   sel.style.width = `${w}rem`;
   sel.style.height = `${h}rem`;
   sprite.style.backgroundImage = spriteBgImg(tool.sheetIndex);
   drawSprite(tState)(frg);
-
-  log({m,n, sheetIndex})
+  log({m,n, sheetIndex, scrollSpeed})
 }; 
 
 const storeSprite = () => {
   // console.log(tool);
   const {x,y,w,h,sheetIndex, shoot} = tool;
   shoot.push({x,y,w,h,sheetIndex})
-  const frg = fragment("#mob", "#gallery", `frg-${2000 + shoot.length}`);
+  const frg = fragment("#mob-o", "#gallery", `frg-${2000 + shoot.length}`);
   drawSprite(tool)(frg);
   frg.style.position = "relative";
   localStorage.setItem('-shoot-', JSON.stringify(shoot));
@@ -88,6 +90,7 @@ const title = document.querySelector('article');
 const nextButton = document.querySelector("button");
 nextButton.classList.add("hidden")
 const scoreIndicator = document.querySelector("#score");
+const desk = document.querySelector("#desk");
 // const marker = document.querySelector("#marker");
 
 const log = info => debug.innerText = JSON.stringify(info);
@@ -100,7 +103,6 @@ sprite.onmousemove = (e) => {
   if (!drag) return;
   e.preventDefault();
   const {screenX, screenY, clientX, clientY, offsetX, offsetY} = e;
-  // log({screenX, screenY, clientX, clientY, offsetX, offsetY});
   
   tool.x = offsetX;
   tool.y = offsetY;
@@ -137,7 +139,7 @@ document.addEventListener("keydown",
     
     // log(shortKey);
     switch (key) {
-      case "c": return drag = !drag;
+      case "c": return drag = !drag; 
       case ",": return titleAnim(true);
       case ".": return titleAnim(false);
       case "n": 
@@ -160,6 +162,9 @@ document.addEventListener("keydown",
       case "k": return tool.n ++;
       case "l": return tool.n --;
       case "v": return storeSprite();
+      case ";": return tool.scrollSpeed = - 5;
+      case "'": return tool.scrollSpeed = + 5;
+      case "\\": return tool.scrollSpeed = 0;
     }
   }
 );
@@ -174,7 +179,7 @@ const selectSheet = (direction) => {
 // const addRun = () => state.run += dice(12);
 // const ts = setInterval(() => state.run ++, 100)
 
-const frg = fragment("#mob", "#gallery", "frg-2000");
+const frg = fragment("#mob-o", "#gallery", "frg-2000");
 frg.style.position = 'relative';
 
 Array(23).fill(0).map((_, idx) => {
@@ -185,14 +190,43 @@ Array(23).fill(0).map((_, idx) => {
 });
 
 
-/** @type {(e:MouseEvent) => void} */
-body.onclick = (e) => {
-  state.bdrag = true;
-  state.bx = e.offsetX;
-  state.by = e.offsetY;
+assets.map((src, idx) => {
+  const frg = fragment("#mob", "#desk", `frg-${5000 + idx}`);
+  drawSprite(src)(frg);
+  frg.style.outline = "none;"
+  frg.style.transform = `
+    translateX(${dice(70)-10}rem)
+    translateY(${dice(70)-10}rem)
+    translateZ(${dice(10)}rem)
+    scale(2)
+    rotateX(-50deg)
+  `;
+})
+
+globalThis.desk = desk
+
+
+const deskMotion = (x) => {
+  
+   const trans = `
+    perspective(60vh)
+    translateX(${x}px)
+    translateZ(0px)
+    rotateX(${x/2}deg)
+    rotateY(0deg)
+    rotateZ(0deg)
+    scale(.64)
+  `
+  desk.style.transform = trans;
 }
 
+globalThis.dm = deskMotion;
 
+const invScroll = setInterval(() => {
+  if (!tool.scrollSpeed) return;
+  deskMotion(scroll += tool.scrollSpeed)
+  state.run = scroll;
+}, 20);
 
 body.onmouseleave = () => {
   state.bdrag = false;
