@@ -1,4 +1,4 @@
-import { fragment, signal, delay } from './old-bird-soft';
+import { fragment, signal } from './old-bird-soft';
 import {assetList} from './shoot';
 import {assets} from './asset';
 
@@ -22,13 +22,13 @@ const toolInitState = {
 };
 
 let scroll = 0;
-globalThis.qs = () => scroll
 const tableSpeed = 4;
+const HIDDEN = "hidden";
 
 const spriteBgImg = index => `url(${spriteSheetList[index]})`;
 
 const dice = (side = 6) => Math.random() * side + 1 | 0;
-const rnd = (side = 6) => Math.random() * side | 0;
+// const rnd = (side = 6) => Math.random() * side | 0;
 
 const drawSprite = ({
   x, y, w, h, 
@@ -72,13 +72,11 @@ const render = (state, ...rest) => {;
 const state = signal(render)(initialState);
 const tool = signal(toolRender)(toolInitState);
 
-globalThis.tool = tool;
-
 const questImageList = Array(357).fill('../mid/flogon')
   .map((fn, idx) => fn + (4000 + idx) + '.jpeg')
   .sort(_ => Math.random() - 0.5);
 
-  const spriteSheetList = Array(33).fill('../sheets/sprite-')
+  const spriteSheetList = Array(34).fill('../sheets/sprite-')
   .map((fn, idx) => fn + (7000 + idx) + '.png')
 
 let counter = 0;
@@ -89,7 +87,7 @@ const sel = document.getElementById('selector');
 const debug = document.getElementById('monitor');
 const title = document.querySelector('article');
 const nextButton = document.querySelector("button");
-nextButton.classList.add("hidden")
+nextButton.classList.add(HIDDEN)
 const scoreIndicator = document.querySelector("#score");
 const highScore = document.querySelector("#high-score");
 const desk = document.querySelector("#desk");
@@ -119,17 +117,18 @@ const nextDay = () => {
 };
 
 const toggleUI = () => {
-  frg.classList.contains("hidden")
+  frg.classList.contains(HIDDEN)
     ? body.classList.add("bg-sky-500")
     : body.classList.add("bg-black");
-  frg.classList.toggle("hidden");
-  sprite.classList.toggle("hidden");
-  debug.classList.toggle("hidden");
-  sel.classList.toggle("hidden");
-  visual1.classList.toggle("hidden");
-  // nextButton.classList.add("hidden");
-  scoreIndicator.classList.add("hidden");
-  desk.classList.toggle("hidden");
+  frg.classList.toggle(HIDDEN);
+  sprite.classList.toggle(HIDDEN);
+  debug.classList.toggle(HIDDEN);
+  sel.classList.toggle(HIDDEN);
+  visual1.classList.toggle(HIDDEN);
+  // nextButton.classList.add(HIDDEN);
+  scoreIndicator.classList.add(HIDDEN);
+  highScore.classList.add(HIDDEN)
+  desk.classList.toggle(HIDDEN);
 }
 
 nextButton.onclick = nextDay;
@@ -147,17 +146,14 @@ document.addEventListener("keydown",
   /** @type {(e:KeyboardEvent) => void} */
   (e) => {
     const {key, altKey, ctrlKey, shiftKey} = e;
-    const shortKey = {key, altKey, ctrlKey, shiftKey};
+    // const shortKey = {key, altKey, ctrlKey, shiftKey};
     
     // log(shortKey);
     switch (key) {
       case "c": return drag = !drag; 
       case ",": return titleAnim(true);
       case ".": return titleAnim(false);
-      case "n": 
-        scoreIndicator.classList.remove('hidden');
-        // nextButton.classList.remove("hidden");
-        return nextDay();
+      case "n": return nextDay();
       case "z": return toggleUI();
       case "[": return selectSheet(-1);
       case "]": return selectSheet(+1);
@@ -175,26 +171,22 @@ document.addEventListener("keydown",
       case "l": return tool.n --;
       case "v": return storeSprite();
       case ";": return tool.scrollSpeed = + tableSpeed;
-      case "'": 
-        callCard() 
-        return tool.scrollSpeed =   0;
-      case "\\":return tool.scrollSpeed = - tableSpeed;
-      // case "o": return callCard();
+      case "'": callCard(); return tool.scrollSpeed =   0;
+      case "\\": return tool.scrollSpeed = - tableSpeed;
     }
   }
 );
 
 const callCard = () => {
-  // const hand = Object.entries(state.deck).filter(([, {isInHand}]) => isInHand);
-  // if (hand.length < 1) return // E N D - O F - R U N;
-  // const [id] = hand[rnd(hand.length)];
-  const [id] = centerCard();
-  state.deck[id].isInHand = false;
-  const who = state.deck[id];
-  return cardTryToEscape(who);
+  const [id] = centerCard() || [];
+  try {
+    state.deck[id].isInHand = false;
+    const who = state.deck[id];
+    return cardTryToEscape(who);
+  } catch (error) { 
+    // E N D
+  }
 }
-
-globalThis.state = state;
 
 const selectSheet = (direction) => {
   tool.sheetIndex = Math.abs(tool.sheetIndex + direction) % spriteSheetList.length;
@@ -202,7 +194,7 @@ const selectSheet = (direction) => {
 
 const frg = fragment("#mob-o", "#gallery", "frg-2000");
 frg.style.position = 'relative';
-frg.classList.add("hidden");
+frg.classList.add(HIDDEN);
 
 /** 
  * @typedef {{
@@ -269,9 +261,6 @@ const cardTryToEscape = async(who) => {
   `;
 })
 
-globalThis.desk = desk
-
-
 const deskMotion = (x) => {
    const trans = `
     perspective(60vh)
@@ -285,8 +274,7 @@ const deskMotion = (x) => {
     desk.style.transform = trans;
 }
 
-
-const invScroll = setInterval(() => {
+setInterval(() => {
   if (!tool.scrollSpeed) return;
   deskMotion(scroll -= tool.scrollSpeed)
   state.run = -scroll;
@@ -295,7 +283,6 @@ const invScroll = setInterval(() => {
 body.onmouseleave = () => {
   state.bdrag = false;
 }
-
 
 const highScoreAnim = () => {
   if (state.scoreTo < state.score) state.scoreTo += 5;  

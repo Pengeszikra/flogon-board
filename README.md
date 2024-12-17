@@ -1,53 +1,37 @@
 ## TODO 4 a final `night`
 - [+] MIT license
 - [-] rework spritesheet to percentage
-- [ ] `implement the game` a good one.
-- test the game
-- `make image switch animation` when change scroll direction then change the image.
-  including treshold and preload.
-- [?] make a table where the player can move on
+- [...] `implement the game` a good one.
+- [?] Add number to card
+- [?] Shuffle the deck
+- [...] test the game
+- [-] `make image switch animation` when change scroll direction then change the image.
+- [?] Select a proper background images
+- [??] make a table where the player can move on 
 - [+] make the card animation
-- `create content`
+- [...] `create content`
 - [+] side scroll animation
 - [+] Media import test
-- connect my program to a `devvit`
-- Try to use a database for something.
-- Make a post message with a image after run.
-- figure out how much focus enough for devvit.
-```js
-Devvit.addCustomPostType({
-  name: '',
-  render: context => {}
-})
-``` 
-```js
-await redis.hset(myPostId, {[index.toString()]: ....})
-
-await redis.hgetall(myPostId);
-```
+- [...] connect my program to a `devvit`
+- [-] Try to use a database for something.
+- [-] Make a post message with a image after run.
+- [+] figure out how much focus enough for devvit.
 - redy for commit the release
 - create 1 min `pitch` video
-- `commit` my project on `devpost`
-- make my channel to `public`
-- create intro
-- create how can I play with this game 
-- [] create a sage who can tell about Flogans
+- [+] `commit` my project on `devpost`
+- [...] make my channel to `public`
+- [?] create intro
+- [?] create how can I play with this game 
+- [?] create a sage who can tell about Flogans
   - [+] sound are tested.
-- separate editor from the game code
-- advertise on social platform
+- [...] separate editor from the game code
+- [?] advertise on social platform
 
 ## `:: Rule ::`
 For the maximum profit need to be close the RUN score to :: `42`
 Under each step draw one card some help some cause problem.
 The profit depend on the solved problem score.
 Which is need to be a 42. If more you gain more score then it will be fail.
-
-The goal still same, but instead of startegic tabletop game, this is a 
-decterity based tabletop game. A flogon jumping on a cards, which is represent the 
-table of game, and when second or third time jump a card that card is fly up and
-can be collect if you are lucky enough to catch it.
-But the final score is depend on when you stop it the game and if you able to stop the 
-counter lower up to 42, then you have a extra bonus to your score.
 
 And thats all!
 
@@ -114,6 +98,7 @@ For the maximum profit need to be close the `RUN` score to :: `42`
 Under each step draw one card some help some cause problem, 
 and the profit depend on the solved problem score.
 Which is need to be a 42. If more you are fail. That's all.
+This is a good plane, but at the end we going to another direction.
 
 - open the app
 - make a few stepp on the table
@@ -121,9 +106,9 @@ Which is need to be a 42. If more you are fail. That's all.
 - finally get a badges, coins, image
 - have option to listen a story of Flogon
 - mem generation ?
-- game animation
+- [+] game animation
 - story animation
-- need to play with a card?
+- [+] need to play with a card?
 
 ## Flogon abilities:
 - dream travel with quantum symmetry
@@ -133,6 +118,7 @@ Which is need to be a 42. If more you are fail. That's all.
 - good sense of humor
 - don't waste their time to political influence to each other
 - don't use digital money
+- avoide the agression because the nightmare is more worst for them
 
 ## Card Set
 
@@ -187,3 +173,17 @@ Maybe chineese AI video generation will be worth.
 WOW! that is very impressive!
 [Flogons floating in the space](https://hailuoai.video/create/324701351598858241)
 [Direct to the video](https://hailuoai.video/share/dOkz0KpoNb3P)
+
+## Devvit
+
+```js
+Devvit.addCustomPostType({
+  name: '',
+  render: context => {}
+})
+``` 
+```js
+await redis.hset(myPostId, {[index.toString()]: ....})
+
+await redis.hgetall(myPostId);
+```
