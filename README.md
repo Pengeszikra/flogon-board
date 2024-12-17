@@ -1,20 +1,38 @@
 ## TODO 4 a final `night`
-- [x] MIT license
+- [+] MIT license
 - [-] rework spritesheet to percentage
-- [ ] `implement the game` - worst one 
+- [ ] `implement the game` a good one.
 - test the game
 - `make image switch animation` when change scroll direction then change the image.
   including treshold and preload.
 - [?] make a table where the player can move on
-- [x] draw the card animation
+- [+] make the card animation
 - `create content`
-- [x] side scroll animation
+- [+] side scroll animation
+- [+] Media import test
 - connect my program to a `devvit`
 - Try to use a database for something.
+- Make a post message with a image after run.
+- figure out how much focus enough for devvit.
+```js
+Devvit.addCustomPostType({
+  name: '',
+  render: context => {}
+})
+``` 
+```js
+await redis.hset(myPostId, {[index.toString()]: ....})
+
+await redis.hgetall(myPostId);
+```
 - redy for commit the release
 - create 1 min `pitch` video
 - `commit` my project on `devpost`
 - make my channel to `public`
+- create intro
+- create how can I play with this game 
+- [] create a sage who can tell about Flogans
+  - [+] sound are tested.
 - separate editor from the game code
 - advertise on social platform
 

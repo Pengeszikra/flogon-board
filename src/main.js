@@ -2,10 +2,10 @@ import { fragment, signal, delay } from './old-bird-soft';
 import {assetList} from './shoot';
 import {assets} from './asset';
 
-
 const initialState = {
   run: 0,
-  next: 0,
+  score: 0,
+  scoreTo: 0,
   deck: [],
 }
 
@@ -14,16 +14,21 @@ const toolInitState = {
   w: 5,  h: 5,
   sheetIndex: 0,
   shoot: [],
-  m: 10,
-  n: 2,
+  m: 10, // important number for sprite editor 
+         // which is depend on main font size, currently: 10px;
+  n: 2,  // less importan the 2 is always seems good.
+         // figure out by number tweak
   scrollSpeed: 0,
 };
 
 let scroll = 0;
+globalThis.qs = () => scroll
+const tableSpeed = 4;
 
 const spriteBgImg = index => `url(${spriteSheetList[index]})`;
 
 const dice = (side = 6) => Math.random() * side + 1 | 0;
+const rnd = (side = 6) => Math.random() * side | 0;
 
 const drawSprite = ({
   x, y, w, h, 
@@ -36,7 +41,6 @@ const drawSprite = ({
   frg.style.backgroundImage = spriteBgImg(sheetIndex);
   frg.style.backgroundSize = `${w * 4 / ( w/5)}rem ${h * 4 / (h /5)}rem`;
   const pos = `${(x/-m) + (w/n)}rem ${(y /-m) + (h/n)}rem`;
-  // console.log(pos,x, m, w, n);
   frg.style.backgroundPosition = pos;
 }
 
@@ -52,7 +56,6 @@ const toolRender = (tState) => {
 }; 
 
 const storeSprite = () => {
-  // console.log(tool);
   const {x,y,w,h,sheetIndex, shoot} = tool;
   shoot.push({x,y,w,h,sheetIndex})
   const frg = fragment("#mob-o", "#gallery", `frg-${2000 + shoot.length}`);
@@ -61,17 +64,15 @@ const storeSprite = () => {
   localStorage.setItem('-shoot-', JSON.stringify(shoot));
 }
 
-const render = (state, ...rest) => {
-  // console.log(state, ...rest)
-  // log(state);
+const render = (state, ...rest) => {;
   scoreIndicator.innerText = state.run;
-  
+  highScore.innerText = state.scoreTo;
 } 
 
 const state = signal(render)(initialState);
 const tool = signal(toolRender)(toolInitState);
 
-globalThis.ss = tool;
+globalThis.tool = tool;
 
 const questImageList = Array(357).fill('../mid/flogon')
   .map((fn, idx) => fn + (4000 + idx) + '.jpeg')
@@ -90,20 +91,19 @@ const title = document.querySelector('article');
 const nextButton = document.querySelector("button");
 nextButton.classList.add("hidden")
 const scoreIndicator = document.querySelector("#score");
+const highScore = document.querySelector("#high-score");
 const desk = document.querySelector("#desk");
-// const marker = document.querySelector("#marker");
 
 const log = info => debug.innerText = JSON.stringify(info);
 
 let drag = false;
-// sel.onclick = e => {e.preventDefault();drag = !drag;};
 
 /** @type {(e:MouseEvent) => void} */
 sprite.onmousemove = (e) => {
   if (!drag) return;
   e.preventDefault();
-  const {screenX, screenY, clientX, clientY, offsetX, offsetY} = e;
-  
+  const {offsetX, offsetY} = e;
+  // screenX, screenY, clientX, clientY, 
   tool.x = offsetX;
   tool.y = offsetY;
 } 
@@ -113,13 +113,15 @@ const titleAnim = (goIn) => title.style.left = goIn ? '0' : '100vw' ;
 const nextDay = () => {
   state.run = 0;
   const img = questImageList[counter % questImageList.length];
- //  const sheet = spriteSheetList[counter % spriteSheetList.length];
   
   visual1.style.backgroundImage = `url(${img})`;
   counter ++ ;
 };
 
 const toggleUI = () => {
+  frg.classList.contains("hidden")
+    ? body.classList.add("bg-sky-500")
+    : body.classList.add("bg-black");
   frg.classList.toggle("hidden");
   sprite.classList.toggle("hidden");
   debug.classList.toggle("hidden");
@@ -134,9 +136,12 @@ nextButton.onclick = nextDay;
 nextDay();
 
 /** @type {HTMLElement} */
-document.querySelector("#left-side").onclick = () => tool.scrollSpeed = + 1;
-document.querySelector("#center-area").onclick = () => tool.scrollSpeed = 0;
-document.querySelector("#right-side").onclick = () => tool.scrollSpeed = - 1;
+document.querySelector("#left-side").onclick = () => tool.scrollSpeed = + tableSpeed;
+document.querySelector("#center-area").onclick = () => {
+  callCard();
+  tool.scrollSpeed = 0;
+}
+document.querySelector("#right-side").onclick = () => tool.scrollSpeed = - tableSpeed;
 
 document.addEventListener("keydown", 
   /** @type {(e:KeyboardEvent) => void} */
@@ -169,14 +174,25 @@ document.addEventListener("keydown",
       case "k": return tool.n ++;
       case "l": return tool.n --;
       case "v": return storeSprite();
-      case ";": return tool.scrollSpeed = + 1;
-      case "'": return tool.scrollSpeed = - 1;
-      case "\\": return tool.scrollSpeed = 0;
-      case "o": return cardTryToEscape(dice(state.deck.length-1));
+      case ";": return tool.scrollSpeed = + tableSpeed;
+      case "'": 
+        callCard() 
+        return tool.scrollSpeed =   0;
+      case "\\":return tool.scrollSpeed = - tableSpeed;
+      // case "o": return callCard();
     }
   }
 );
 
+const callCard = () => {
+  // const hand = Object.entries(state.deck).filter(([, {isInHand}]) => isInHand);
+  // if (hand.length < 1) return // E N D - O F - R U N;
+  // const [id] = hand[rnd(hand.length)];
+  const [id] = centerCard();
+  state.deck[id].isInHand = false;
+  const who = state.deck[id];
+  return cardTryToEscape(who);
+}
 
 globalThis.state = state;
 
@@ -184,60 +200,70 @@ const selectSheet = (direction) => {
   tool.sheetIndex = Math.abs(tool.sheetIndex + direction) % spriteSheetList.length;
 }
 
-// const addRun = () => state.run += dice(12);
-// const ts = setInterval(() => state.run ++, 100)
-
 const frg = fragment("#mob-o", "#gallery", "frg-2000");
 frg.style.position = 'relative';
 frg.classList.add("hidden");
 
-state.deck = Array(23).fill(0).map((_, idx) => {
-  const crd = fragment("#card", "#desk", `crd-${9000 + idx}`);
+/** 
+ * @typedef {{
+ *  id: string
+ *  crd: HTMLElement
+ *  order: number
+ *  score: number
+ *  isInHand: Boolean
+ * }} Card 
+ */
+
+state.deck = Object.fromEntries(Array(23).fill(0).map((_, idx) => {
+  const id = `crd-${9000 + idx}`;
+  const crd = fragment("#card", "#desk", id);
   drawSprite(assetList[idx])(crd);
   const order = idx * 16 - (16 * 12);
   crd.style.transform = `translateX(${order}rem) translateY(22rem) scale(3)`;
   crd.onclick = () => state.run += dice(9);
-  return [crd, order];
-});
+  const score = dice(50) * 10 + 10;
+  return [id, {crd, order, score,  isInHand: true}];
+}));
 
 const flyOut = (x) => [
-  `translateX(${x}rem) translateY(22rem) scale(3) rotateX(-50deg) translateZ(-2rem)`,
-  `translateX(${x}rem) translateY(-22rem) scale(3) rotateX(-50deg) translateZ(-2rem)`, 
-  `translateX(${x}rem) translateY(-22rem) scale(3) translateZ(-4rem) rotateX(-60deg)`,
-  `translateX(${x}rem) translateY(-22rem) scale(3) translateZ(20rem) rotateX(-80deg)`,
-  `translateX(${x}rem) translateY(10rem) scale(3) translateZ(20rem) rotateX(-60deg)`,
-  `translateX(${x}rem) translateY(8rem) scale(3) translateZ(20rem) rotateX(-60deg)`,
-  `translateX(${x}rem) translateY(10rem) scale(3) translateZ(20rem) rotateX(-55deg)`,
-  `translateX(${x}rem) translateY(12rem) scale(3) translateZ(20rem) rotateX(-60deg)`,
-  `translateX(${x}rem) translateY(10rem) scale(3) translateZ(20rem) rotateX(-65deg)`,
-  `translateX(${x}rem) translateY(70rem) scale(3) translateZ(-80rem) rotateX(-60deg)`,
+  `translateX(${x}rem) translateY(-22rem) scale(3) rotateX(-50deg)    translateZ(-2rem)`, 
+  `translateX(${x}rem) translateY(-22rem) scale(3) translateZ(-4rem)  rotateX(-60deg)`,
+  `translateX(${x}rem) translateY(-22rem) scale(3) translateZ(20rem)  rotateX(-80deg)`,
+  `translateX(${x}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
+  `translateX(${x}rem) translateY(8rem)   scale(3) translateZ(20rem)  rotateX(-60deg)`,
+  `translateX(${x}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-55deg)`,
+  `translateX(${x}rem) translateY(12rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
+  `translateX(${x}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-65deg)`,
+  `translateX(${x}rem) translateY(70rem)  scale(3) translateZ(-80rem) rotateX(-60deg)`,
 ]
   
-
+/** @type {(who:Card) => void} */
 const cardTryToEscape = async(who) => {
-  /** @type {[HTMLElement, number]} */
-  const [escape, x] = state.deck[who];
-  const sequence = [...flyOut(x)];
-  setInterval(() => {
-  const ani = sequence.shift();
-    escape.style.transition = `transform 300ms linear`;
-    escape.style.transform = ani;
-  }, 300);
+  const cardSpeed = 200;
+  const {crd, order} = who;
+  const sequence = [...flyOut(order)];
+  const stop = setInterval(() => {
+    const ani = sequence.shift();
+    crd.style.transition = `transform ${cardSpeed}ms linear`;
+    crd.style.transform = ani;
+    if (sequence.length === 7) { state.score += dice(10) * 10;}
+    if (!sequence.length) {clearInterval(stop)}
+  }, cardSpeed);
 };
 
 [
   ...assets,
   ...assets,
   ...assets,
-  ...assets
+  // ...assets
 ].map((src, idx) => {
   const frg = fragment("#mob", "#desk", `frg-${5000 + idx}`);
   drawSprite(src)(frg);
   frg.style.outline = "none;"
   frg.style.transform = `
     translateX(${dice(400)-200}rem)
-    translateY(${dice(70)-10}rem)
-    translateZ(${dice(10)}rem)
+    translateY(${dice(50)-10}rem)
+    translateZ(${dice(-7) - 3}rem)
     scale(2)
     rotateX(-50deg)
   `;
@@ -247,7 +273,6 @@ globalThis.desk = desk
 
 
 const deskMotion = (x) => {
-  
    const trans = `
     perspective(60vh)
     translateX(${x}px)
@@ -256,12 +281,10 @@ const deskMotion = (x) => {
     rotateY(0deg)
     rotateZ(0deg)
     scale(.64)
-    `
-    // rotateX(${x/2}deg)
+    `;
     desk.style.transform = trans;
 }
 
-globalThis.dm = deskMotion;
 
 const invScroll = setInterval(() => {
   if (!tool.scrollSpeed) return;
@@ -271,4 +294,31 @@ const invScroll = setInterval(() => {
 
 body.onmouseleave = () => {
   state.bdrag = false;
+}
+
+
+const highScoreAnim = () => {
+  if (state.scoreTo < state.score) state.scoreTo += 5;  
+  requestAnimationFrame(highScoreAnim);
+}
+requestAnimationFrame(highScoreAnim);
+
+// new Audio('../media/James-8000.mp3').play();
+
+const closeToCenter = (pos, center) => Math.abs(center - (pos.left + pos.width / 2));
+/** @type {() => Card} */
+const centerCard = () => {
+  const center = window.innerWidth / 2;
+  const inHand = Object
+    .entries(state.deck)
+    .filter(([,{isInHand}]) => isInHand)
+  if (inHand.length < 1) return; // E N D
+  return inHand
+    .reduce((col, itm) => {
+      const itmPos = closeToCenter(itm[1].crd.getBoundingClientRect(), center);
+      const colPos = closeToCenter(col[1].crd.getBoundingClientRect(), center);
+      return itmPos < colPos
+        ? itm
+        : col
+    });
 }

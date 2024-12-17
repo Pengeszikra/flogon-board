@@ -5,9 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Flogon Fleet</title>
   <link href="src/style.css" rel="stylesheet" />
-  <!-- <link href="src/marker.css" rel="stylesheet" /> -->
   <script type="module" src="src/main.js"></script>
-  <!-- <script type="module" src="src/marker.js"></script> -->
 </head>
 <template id="mob-o">
   <section class="
@@ -164,6 +162,7 @@
   ">Flogons on the Bridge!</article>
 
   <div id="score" class="
+    hidden
     absolute
     top-[50%-3rem]
     left-[50%-3rem]
@@ -172,6 +171,20 @@
     font-black
     select-none
     pointer-events-none
-  ">42</div>
+  ">0</div>
+
+  <div id="high-score" class="
+    absolute
+    top-[1rem]
+    left-[50%-3rem]
+    text-[6rem]
+    text-red-600
+    font-black
+    select-none
+    pointer-events-none
+  ">0</div>
+
+
+  <!-- <video class="absolute top-0 left-0 w-[20rem] h-[20rem]" autoplay loop src="../media/flogons-news-8001.mp4"></video> -->
 </body>
 </html>

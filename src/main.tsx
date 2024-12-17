@@ -6,18 +6,9 @@ const appName = 'Flogons on the Bridge!';
 
 // Defines the messages that are exchanged between Devvit and Web View
 type WebViewMessage =
-  | {
-      type: 'initialData';
-      data: { username: string; currentCounter: number };
-    }
-  | {
-      type: 'setCounter';
-      data: { newCounter: number };
-    }
-  | {
-      type: 'updateCounter';
-      data: { currentCounter: number };
-    };
+  | { type: 'initialData'; data: { username: string; currentCounter: number };}
+  | { type: 'setCounter'; data: { newCounter: number };}
+  | { type: 'updateCounter'; data: { currentCounter: number }; };
 
 Devvit.configure({
   redditAPI: true,
@@ -51,9 +42,7 @@ Devvit.addCustomPostType({
           await context.redis.set(`counter_${context.postId}`, msg.data.newCounter.toString());
           context.ui.webView.postMessage('myWebView', {
             type: 'updateCounter',
-            data: {
-              currentCounter: msg.data.newCounter,
-            },
+            data: { currentCounter: msg.data.newCounter },
           });
           setCounter(msg.data.newCounter);
           break;
@@ -71,10 +60,7 @@ Devvit.addCustomPostType({
       setWebviewVisible(true);
       context.ui.webView.postMessage('myWebView', {
         type: 'initialData',
-        data: {
-          username: username,
-          currentCounter: counter,
-        },
+        data: { username: username, currentCounter: counter, },
       });
     };
 
