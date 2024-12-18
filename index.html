@@ -7,6 +7,16 @@
   <link href="src/style.css" rel="stylesheet" />
   <script type="module" src="src/main.js"></script>
 </head>
+<template id="ui-blend">
+  <section class="
+    top-2 left-2
+    --bg-blend-hard-light
+    absolute w-[5rem] h-[5rem]
+    opacity-20
+    --pointer-events-none
+    --mix-blend-color-dodge
+  "></section>
+</template>
 <template id="mob-o">
   <section class="
     top-2 left-2
@@ -41,13 +51,16 @@
 </template>
 
 <body class="
-  --bg-sky-600
   bg-black
   text-zinc-200
   grid
   place-items-center
-  min-w-full min-h-[100vh]
-  overflow-hidden
+  --min-w-full
+  m-auto
+  overflow-clip
+  max-w-screen-md
+  min-h-[100vh]
+  <!-- overflow-hidden -->
   relative
   --pointer-events-none
   "
@@ -64,8 +77,8 @@
     min-w-full min-h-[100vh]
     pointer-events-none select-none
     bg-transparent
-    --bg-cover
-    bg-contain
+    bg-cover
+    --bg-contain
     bg-no-repeat
     --bg-center
     bg-top
@@ -101,9 +114,10 @@
   ">next mission</button>
 
   <figure id="desk" class="
-    --hidden
     absolute top-0 left-0
-    w-[100vw] h-[100vh]
+    w-[100vw] 
+    h-[100vh]
+  
   "></figure>
  
   <figure id="sprite-sheet" class="

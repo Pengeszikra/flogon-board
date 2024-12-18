@@ -33,19 +33,18 @@ Under each step draw one card some help some cause problem.
 The profit depend on the solved problem score.
 Which is need to be a 42. If more you gain more score then it will be fail.
 
+But where is this rule? Really great question. 
+
+This game is just a weak copy of the Flogons most sucessfull intergalactic game:
+the "Throw To Match". In real setup this game will be play any amount of player.
+Just sit down on table and throw their card to a middle with a surprising great 
+dexterity.
+
+Meanwhile the small figure step ahead on a small table to reach the 
+UHN :: Universal Harmony Number :: 42!
+
 And thats all!
 
-```
-// state.deck[17].style.transform = 
-// animation out
-'translateX(80rem) translateY(22rem) scale(3) rotateX(-50deg) translateZ(-2rem)',
-'translateX(80rem) translateY(-22rem) scale(3) rotateX(-50deg) translateZ(-2rem)', 
-'translateX(80rem) translateY(-22rem) scale(3) translateZ(-4rem) rotateX(-60deg)',
-'translateX(80rem) translateY(-22rem) scale(3) translateZ(20rem) rotateX(-80deg)',
-'translateX(80rem) translateY(10rem) scale(3) translateZ(20rem) rotateX(-60deg)',
-'translateX(80rem) translateY(10rem) scale(3) translateZ(80rem) rotateX(-60deg)',
-
-```
 
 # Flogons on the Bridge!
 

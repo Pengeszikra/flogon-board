@@ -1,6 +1,7 @@
 import { fragment, signal } from './old-bird-soft';
 import {assetList} from './shoot';
 import {assets} from './asset';
+import {scifiUI} from './ui-elements';
 
 const initialState = {
   run: 0,
@@ -72,11 +73,11 @@ const render = (state, ...rest) => {;
 const state = signal(render)(initialState);
 const tool = signal(toolRender)(toolInitState);
 
-const questImageList = Array(357).fill('../mid/flogon')
+const questImageList = Array(295).fill('../mid/flogon')
   .map((fn, idx) => fn + (4000 + idx) + '.jpeg')
   .sort(_ => Math.random() - 0.5);
 
-  const spriteSheetList = Array(34).fill('../sheets/sprite-')
+  const spriteSheetList = Array(37).fill('../sheets/sprite-')
   .map((fn, idx) => fn + (7000 + idx) + '.png')
 
 let counter = 0;
@@ -189,7 +190,11 @@ const callCard = () => {
 }
 
 const selectSheet = (direction) => {
-  tool.sheetIndex = Math.abs(tool.sheetIndex + direction) % spriteSheetList.length;
+  if (tool.sheetIndex + direction < 0) {
+    tool.sheetIndex = spriteSheetList.length -1;
+    return;
+  }
+  tool.sheetIndex = (tool.sheetIndex + direction) % spriteSheetList.length;
 }
 
 const frg = fragment("#mob-o", "#gallery", "frg-2000");
@@ -245,8 +250,9 @@ const cardTryToEscape = async(who) => {
 
 [
   ...assets,
-  ...assets,
-  ...assets,
+  // ...assets,
+  // ...assets,
+  // ...scifiUI,
   // ...assets
 ].map((src, idx) => {
   const frg = fragment("#mob", "#desk", `frg-${5000 + idx}`);
@@ -260,6 +266,22 @@ const cardTryToEscape = async(who) => {
     rotateX(-50deg)
   `;
 })
+
+scifiUI.map((src, idx) => {
+  const ui = fragment("#ui-blend", "#desk", `ui-${5000 + idx}`);
+  drawSprite(src)(ui);
+  ui.style.outline = "none;"
+  ui.style.transform = `
+    translateX(${dice(800)-400}rem)
+    translateY(22rem)
+    translateZ(-10rem)
+    scale(18)
+    rotateX(-10deg)
+  `;
+})
+
+
+
 
 const deskMotion = (x) => {
    const trans = `
@@ -275,7 +297,11 @@ const deskMotion = (x) => {
 }
 
 setInterval(() => {
-  if (!tool.scrollSpeed) return;
+  if (
+    !tool.scrollSpeed ||
+    scroll - tool.scrollSpeed < - 1200 || 
+    scroll - tool.scrollSpeed > 1700
+  ) return;
   deskMotion(scroll -= tool.scrollSpeed)
   state.run = -scroll;
 }, 5);
