@@ -23,7 +23,7 @@ const toolInitState = {
 };
 
 let scroll = 0;
-const tableSpeed = 4;
+const tableSpeed = 1;
 const HIDDEN = "hidden";
 
 const spriteBgImg = index => `url(${spriteSheetList[index]})`;
@@ -250,10 +250,10 @@ const cardTryToEscape = async(who) => {
 
 [
   ...assets,
-  // ...assets,
-  // ...assets,
+  ...assets,
+  ...assets,
   // ...scifiUI,
-  // ...assets
+  ...assets
 ].map((src, idx) => {
   const frg = fragment("#mob", "#desk", `frg-${5000 + idx}`);
   drawSprite(src)(frg);
@@ -261,7 +261,7 @@ const cardTryToEscape = async(who) => {
   frg.style.transform = `
     translateX(${dice(400)-200}rem)
     translateY(${dice(50)-10}rem)
-    translateZ(${dice(-7) - 3}rem)
+    translateZ(${dice(7) + 3}rem)
     scale(2)
     rotateX(-50deg)
   `;

@@ -52,8 +52,7 @@ Flogons on the Bridge! is a chaotic, hilarious social tabletop game where every 
 
 ## Who is the Flogons?
 Flogons is a most succesfull space trader in the galaxy.
-Their secret skill give a power to reach even the farest place in the universe.
-Our broader knwoledge is included in this game, after every turn you get a piece of information.
+Their secret skill give a power to reach even the farest place in the universe. Our broader knwoledge is included in this game, after every turn you get a piece of information.
 
 ## Moments of Flogons 
 
