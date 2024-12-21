@@ -4,19 +4,45 @@ import {assets} from './asset';
 import {scifiUI} from './ui-elements';
 import {setupMarkerViews} from "./marker";
 
-setupMarkerViews()
-
-const initialState = {
-  run: '-',
-  score: 0,
-  scoreTo: 0,
-  deck: [],
-  itIsOver: false,
-}
+setupMarkerViews();
 
 let scroll = 0;
 const tableSpeed = 2;
 const HIDDEN = "hidden";
+
+/** 
+ * @typedef {{
+*  id: string
+*  crd: HTMLElement
+*  order: number
+*  score: number
+*  power: number
+*  isInHand: Boolean
+* }} Card 
+*/
+
+/** 
+ * @typedef {{
+ *  run: number | null
+ *  score: number
+ *  scoreTo: number
+ *  deck: Card[]
+ *  opponent: Card[]
+ *  itIsOver: boolean
+ *  scrollSpeed: number
+ *  img: string
+ * }} State 
+ */
+
+const initialState = {
+  run: 0,
+  score: 0,
+  scoreTo: 0,
+  deck: [],
+  itIsOver: false,
+  scrollSpeed: -tableSpeed,
+  img: "",
+}
 
 const toolInitState = { 
   x: 0,  y: 0,
@@ -27,7 +53,6 @@ const toolInitState = {
          // which is depend on main font size, currently: 10px;
   n: 2,  // less importan the 2 is always seems good.
          // figure out by number tweak
-  scrollSpeed: -tableSpeed,
 };
 
 const spriteBgImg = index => `url(${spriteSheetList[index]})`;
@@ -50,14 +75,14 @@ const drawSprite = ({
 }
 
 const toolRender = (tState) => {
-  const {x, y, w, h, m, n, sheetIndex, scrollSpeed} = tState;
+  const {x, y, w, h, m, n, sheetIndex} = tState;
   sel.style.left =  `calc(${x}px - ${w/2}rem)`;
   sel.style.top =  `calc(${y}px - ${h/2}rem)`;
   sel.style.width = `${w}rem`;
   sel.style.height = `${h}rem`;
   sprite.style.backgroundImage = spriteBgImg(tool.sheetIndex);
   drawSprite(tState)(frg);
-  log({m,n, sheetIndex, scrollSpeed})
+  log({m,n, sheetIndex})
 }; 
 
 const storeSprite = () => {
@@ -69,13 +94,17 @@ const storeSprite = () => {
   localStorage.setItem('-shoot-', JSON.stringify(shoot));
 }
 
+/** @type {(state:State) => void} */
 const render = (state) => {;
-  scoreIndicator.innerText = state.run;
+  // scoreIndicator.innerText = state.run;
   highScore.innerText = state.scoreTo;
+  const {score, run, img} = state;
+  log({score, run, img})
 } 
 
 const state = signal(render)(initialState);
 const tool = signal(toolRender)(toolInitState);
+globalThis.state = state;
 
 const questImageList = Array(295).fill('../mid/flogon')
   .map((fn, idx) => fn + (4000 + idx) + '.jpeg')
@@ -116,6 +145,7 @@ sprite.onmousemove = (e) => {
 const nextDay = () => {
   // state.run = 0;
   const img = questImageList[counter % questImageList.length];
+  state.img = img;
   
   visual1.style.backgroundImage = `url(${img})`;
   counter ++ ;
@@ -136,15 +166,15 @@ const toggleUI = () => {
 }
 
 nextButton.onclick = nextDay;
-nextDay();
+
 
 /** @type {HTMLElement} */
-document.querySelector("#left-side").onclick = () => tool.scrollSpeed = + tableSpeed;
+document.querySelector("#left-side").onclick = () => state.scrollSpeed = + tableSpeed;
 document.querySelector("#center-area").onclick = () => {
   callCard();
-  tool.scrollSpeed = 0;
+  state.scrollSpeed = 0;
 }
-document.querySelector("#right-side").onclick = () => tool.scrollSpeed = - tableSpeed;
+document.querySelector("#right-side").onclick = () => state.scrollSpeed = - tableSpeed;
 
 document.addEventListener("keydown", 
   /** @type {(event:KeyboardEvent) => void} */
@@ -173,13 +203,13 @@ document.addEventListener("keydown",
       case "v": return storeSprite();
       // case "ArrowLeft":
       case ",":
-      case ";": return tool.scrollSpeed = + tableSpeed;
+      case ";": return state.scrollSpeed = + tableSpeed;
       // case "ArrowUp":
       case " ":
-      case "'": callCard(); return tool.scrollSpeed =   0;
+      case "'": callCard(); return state.scrollSpeed =   0;
       // case "ArrowRight":
       case ".":
-      case "\\": return tool.scrollSpeed = - tableSpeed;
+      case "\\": return state.scrollSpeed = - tableSpeed;
     }
   }
 );
@@ -189,7 +219,7 @@ const callCard = () => {
   try {
     state.deck[id].isInHand = false;
     const who = state.deck[id];
-    return cardTryToEscape(who);
+    return callCardToPlay(who);
   } catch (error) { 
     state.itIsOver = true;
   }
@@ -207,22 +237,13 @@ const frg = fragment("#mob-o", "#gallery", "frg-2000");
 frg.style.position = 'relative';
 frg.classList.add(HIDDEN);
 
-/** 
- * @typedef {{
- *  id: string
- *  crd: HTMLElement
- *  order: number
- *  score: number
- *  power: number
- *  isInHand: Boolean
- * }} Card 
- */
 
-
-const shuffledSet = Array(23)
+const shuffle23 = () => Array(23)
   .fill(0)
   .map((_, idx) => idx)
-  .sort(() => Math.random() - .5)
+  .sort(() => Math.random() - .5);
+
+const shuffledSet = shuffle23();
 
 state.deck = Object.fromEntries(shuffledSet.map((value, idx) => {
   const id = `crd-${9000 + value}`;
@@ -236,29 +257,69 @@ state.deck = Object.fromEntries(shuffledSet.map((value, idx) => {
   return [id, {crd, order, score, power,  isInHand: true}];
 }));
 
-const flyOut = (x) => [
-  `translateX(${x}rem) translateY(-22rem) scale(3) rotateX(-50deg)    translateZ(-2rem)`, 
-  `translateX(${x}rem) translateY(-22rem) scale(3) translateZ(-4rem)  rotateX(-60deg)`,
-  `translateX(${x}rem) translateY(-22rem) scale(3) translateZ(20rem)  rotateX(-80deg)`,
-  `translateX(${x}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
-  `translateX(${x}rem) translateY(8rem)   scale(3) translateZ(20rem)  rotateX(-60deg)`,
-  `translateX(${x}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-55deg)`,
-  `translateX(${x}rem) translateY(12rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
-  `translateX(${x}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
+const opponentSet = shuffle23();
+
+state.opponent = opponentSet.map((value, idx) => {
+  const id = `opp-${8000 + value}`;
+  const opp = fragment("#card", "#desk", id);
+  drawSprite(assetList[value])(opp);
+  const order = 0;
+  opp.style.transform = `translateX(${order}rem) translateY(-11rem) scale(3) translateZ(${idx/6}rem`;
+  // const score = dice(50) * 10 + 10;
+  const power = value - 11
+  opp.querySelector('div').innerText = power;
+  return {opp, order, power, idx};
+});
+
+const flyOut = (order) => [
+  `translateX(${order}rem) translateY(-22rem) scale(3) translateZ(-2rem)  rotateX(-50deg)`, 
+  `translateX(${order}rem) translateY(-22rem) scale(3) translateZ(-4rem)  rotateX(-60deg)`,
+  `translateX(${order}rem) translateY(-22rem) scale(3) translateZ(20rem)  rotateX(-80deg)`,
+  `translateX(${order}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
+  `translateX(${order}rem) translateY(8rem)   scale(3) translateZ(20rem)  rotateX(-60deg)`,
+  `translateX(${order}rem) translateY(9rem)  scale(3) translateZ(20rem)  rotateX(-55deg)`,
+  `translateX(${order}rem) translateY(9rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
+  `translateX(${order}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
+  `translateX(${order}rem) translateY(11rem) scale(3) translateZ(0rem)  rotateX(0deg)`, 
+  `translateX(${order}rem) translateY(11rem) scale(3) translateZ(0rem)  rotateX(0deg)`, 
+]
+
+const flyToMatch = (order) => [
+  `translateX(0rem)              translateY(-22rem) scale(3) translateZ(7rem)   rotateX(-50deg)   `, 
+  `translateX(${order/1.3}rem)   translateY(0rem)   scale(3) translateZ(12rem)   rotateX(-60deg)`,
+  // `translateX(${order/1.2}rem)   translateY(32rem)  scale(3) translateZ(13rem)  rotateX(-60deg)`,
+  `translateX(${order/1.1}rem)   translateY(35rem)  scale(3) translateZ(14rem)  rotateX(-60deg)`,
+  `translateX(${order * 1.1}rem)   translateY(39rem)  scale(3) translateZ(15rem)  rotateX(-60deg)`,
+  // `translateX(${order * 1.3}rem)       translateY(38rem)  scale(3) translateZ(16rem)  rotateX(-55deg)`,
+  // `translateX(${order * 1.1}rem) translateY(27rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
+  // `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
+  `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
+  `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
+  `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
+  `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
+  `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
+  `translateX(${order}rem)       translateY(22rem)  scale(3) translateZ(1rem)  rotateX(0deg)`,
   // `translateX(${x}rem) translateY(70rem)  scale(3) translateZ(-80rem) rotateX(-60deg)`,
 ]
+
   
 /** @type {(who:Card) => void} */
-const cardTryToEscape = async(who) => {
+const callCardToPlay = async(who) => {
   const cardSpeed = 200;
   const {crd, order} = who;
+  const {opp, power: opw} = state.opponent.pop();
+  // console.log(opp, opw);
   const sequence = [...flyOut(order)];
+  const matchSeq = [...flyToMatch(order)];
   const stop = setInterval(() => {
     const ani = sequence.shift();
+    const aoo = matchSeq.shift();
     crd.style.transition = `transform ${cardSpeed}ms linear`;
+    opp.style.transition = `transform ${cardSpeed}ms linear`;
     crd.style.transform = ani;
+    opp.style.transform = aoo; 
     if (sequence.length === 4) { state.score += dice(10) * 10;}
-    if (!sequence.length) {clearInterval(stop)}
+    if (!sequence.length) { clearInterval(stop) }
   }, cardSpeed);
 };
 
@@ -308,14 +369,14 @@ const deskMotion = (x) => {
 }
 
 setInterval(() => {
-  if ( !tool.scrollSpeed ) return;
-  if (scroll - tool.scrollSpeed < - 1200 || 
-    scroll - tool.scrollSpeed > 1700
+  if ( !state.scrollSpeed ) return;
+  if (scroll - state.scrollSpeed < - 1200 || 
+    scroll - state.scrollSpeed > 1700
   ) {
-    tool.scrollSpeed = -tool.scrollSpeed;
+    state.scrollSpeed = -state.scrollSpeed;
     state.run = dice(21) - 11;
   }
-  deskMotion(scroll -= tool.scrollSpeed)
+  deskMotion(scroll -= state.scrollSpeed)
 }, 5);
 
 body.onmouseleave = () => {
@@ -355,3 +416,5 @@ const centerCard = () => {
 const rulePage = document.querySelector('#game-rule');
 rulePage.querySelector('button').onclick = () => 
     rulePage.classList.add(HIDDEN);
+
+nextDay();

@@ -1,4 +1,19 @@
 ## `:: Rule ::`
+```js
+Mandatory a pair with the incoming 
+card, according by number:
+// positive number: 
+    the odd with even
+// negative number: 
+    odd with odd & even with even,
+    "combo" when pair with same
+// zero: 
+  can be pair with any number, 
+  "this is a final movement"
+```
+
+You can controll this game by click on left right or center side of screen, or use the key: <, space,  >. Card are Moving!
+
 For the maximum profit need to be close the RUN score to :: `42`
 Under each step draw one card some help some cause problem.
 The profit depend on the solved problem score.
@@ -40,18 +55,15 @@ export default Devvit;
 - [-] `make image switch animation` when change scroll direction then change the image.
 - [?] Select a proper background images
 - [??] make a table where the player can move on 
-- [...] `create content`
 - [...] connect my program to a `devvit`
-- [-] Try to use a database for something.
-- [-] Make a post message with a image after run.
-- [...] create intro
+  - [...] `create content`
+  - [-] Try to use a database for something.
+  - [-] Make a post message with a image after run.
 - [+] create how can I play with this game 
 - [+] implement `M A R K E R` for info
-- [...] create a sage who can tell about Flogans
+- [...] create a sage who can tell about Flogons
+- [+] create intro : Pitch
 - [+] advertise on social platform
-- [?] use marker-view as 
-
-
 
 # Flogons on the Bridge!
 
