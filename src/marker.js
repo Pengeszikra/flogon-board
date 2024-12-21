@@ -142,30 +142,17 @@
     return colorCode;
   }
 
-
-const whenDomReady = () => {
+export const markerView = (source) => {
   customElements.define('markdown-view', class extends HTMLElement {
     constructor() {
       super();
-      const source = document.querySelector('textarea').value;
-      globalThis.so = source;
-      this.innerHTML = markdownParser(source);
+      fetch(source)
+        .then(r => r.text())
+        .then(md => this.changeContent(md))
     }
 
     changeContent(source) {
       this.innerHTML = markdownParser(source);
     }
   });
-
-  const markdownView = document.querySelector('markdown-view');
-  const markdownEditor = document.querySelector('textarea');
-
-  fetch('README.md').then(r => r.text()).then(md => markdownView.changeContent(md))
-
-  markdownEditor.addEventListener("input", e => {
-    e.stopPropagation();
-    markdownView.changeContent(e?.target?.value);
-  })
 };
-
-window.addEventListener('DOMContentLoaded', whenDomReady);

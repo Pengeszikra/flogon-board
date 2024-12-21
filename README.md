@@ -1,37 +1,10 @@
-## TODO 4 a final `night`
-- [+] MIT license
-- [-] rework spritesheet to percentage
-- [...] `implement the game` a good one.
-- [?] Add number to card
-- [?] Shuffle the deck
-- [...] test the game
-- [-] `make image switch animation` when change scroll direction then change the image.
-- [?] Select a proper background images
-- [??] make a table where the player can move on 
-- [+] make the card animation
-- [...] `create content`
-- [+] side scroll animation
-- [+] Media import test
-- [...] connect my program to a `devvit`
-- [-] Try to use a database for something.
-- [-] Make a post message with a image after run.
-- [+] figure out how much focus enough for devvit.
-- redy for commit the release
-- create 1 min `pitch` video
-- [+] `commit` my project on `devpost`
-- [...] make my channel to `public`
-- [?] create intro
-- [?] create how can I play with this game 
-- [?] create a sage who can tell about Flogans
-  - [+] sound are tested.
-- [...] separate editor from the game code
-- [?] advertise on social platform
-
 ## `:: Rule ::`
 For the maximum profit need to be close the RUN score to :: `42`
 Under each step draw one card some help some cause problem.
 The profit depend on the solved problem score.
 Which is need to be a 42. If more you gain more score then it will be fail.
+
+![](./public/mid/flogon4217.jpeg)
 
 But where is this rule? Really great question. 
 
@@ -41,9 +14,43 @@ Just sit down on table and throw their card to a middle with a surprising great
 dexterity.
 
 Meanwhile the small figure step ahead on a small table to reach the 
-UHN :: Universal Harmony Number :: 42!
-
+> UHN :: Universal Harmony Number :: 42!
 And thats all!
+
+## TODO after a final `night`
+- [+] Simplify the Devvit frame
+```javascript
+import './createPost.js';
+import { Devvit } from '@devvit/public-api';
+
+Devvit.addCustomPostType({
+  name: 'Flogons: Match to 42',
+  height: 'tall',
+  render: () => <webview id="FlogonMatchWebView" url="index.html" grow height={'100%'} />
+});
+
+export default Devvit;
+```
+- [-] rework spritesheet to percentage
+- [...] `implement the game` a good one.
+- [+] Add number to card
+- [+] Shuffle the deck
+- [+] game rule screen
+- [...] test the game
+- [-] `make image switch animation` when change scroll direction then change the image.
+- [?] Select a proper background images
+- [??] make a table where the player can move on 
+- [...] `create content`
+- [...] connect my program to a `devvit`
+- [-] Try to use a database for something.
+- [-] Make a post message with a image after run.
+- [...] create intro
+- [+] create how can I play with this game 
+- [+] implement `M A R K E R` for info
+- [...] create a sage who can tell about Flogans
+- [+] advertise on social platform
+- [?] use marker-view as 
+
 
 
 # Flogons on the Bridge!

@@ -2,6 +2,7 @@ import { fragment, signal } from './old-bird-soft';
 import {assetList} from './shoot';
 import {assets} from './asset';
 import {scifiUI} from './ui-elements';
+import {markerView} from "./marker";
 
 const initialState = {
   run: '-',
@@ -11,7 +12,7 @@ const initialState = {
 }
 
 let scroll = 0;
-const tableSpeed = 4;
+const tableSpeed = 2;
 const HIDDEN = "hidden";
 
 const toolInitState = { 
@@ -149,8 +150,8 @@ document.addEventListener("keydown",
     const {key} = event;
     switch (key) {
       case "c": return drag = !drag; 
-      case ",": return titleAnim(true);
-      case ".": return titleAnim(false);
+      // case ",": return titleAnim(true);
+      // case ".": return titleAnim(false);
       case "n": return nextDay();
       case "z": return toggleUI();
       case "[": return selectSheet(-1);
@@ -168,11 +169,14 @@ document.addEventListener("keydown",
       case "k": return tool.n ++;
       case "l": return tool.n --;
       case "v": return storeSprite();
-      case "ArrowLeft":
+      // case "ArrowLeft":
+      case ",":
       case ";": return tool.scrollSpeed = + tableSpeed;
-      case "ArrowUp":
+      // case "ArrowUp":
+      case " ":
       case "'": callCard(); return tool.scrollSpeed =   0;
-      case "ArrowRight":
+      // case "ArrowRight":
+      case ".":
       case "\\": return tool.scrollSpeed = - tableSpeed;
     }
   }
@@ -259,7 +263,7 @@ const cardTryToEscape = async(who) => {
 [
   ...assets,
   ...assets,
-  // ...assets,
+  ...assets,
   // ...scifiUI,
   // ...assets
 ].map((src, idx) => {
@@ -341,3 +345,7 @@ const centerCard = () => {
         : col
     });
 }
+
+const rulePage = document.querySelector('#game-rule');
+rulePage.querySelector('button').onclick = () => rulePage.classList.add(HIDDEN);
+markerView('./sage/rule.md')
