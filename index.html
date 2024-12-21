@@ -8,6 +8,9 @@
   <link href="src/marker.css" rel="stylesheet" />
   <script type="module" src="src/main.js"></script>
 </head>
+
+<!-- T E M P L A T E S -->
+
 <template id="ui-blend">
   <section class="
     top-2 left-2
@@ -61,6 +64,9 @@
       ">9</div>
   </section>
 </template>
+
+<!-- B O D Y -->
+
 <body class="
 bg-black
 text-zinc-200
@@ -68,6 +74,9 @@ max-w-screen-md
 m-auto
 overflow-hidden
 ">
+
+  <!-- G A M E -->
+
   <main class="
     grid
     place-items-center
@@ -199,6 +208,9 @@ overflow-hidden
     ">0</div>
     <!-- <video class="absolute top-0 left-0 w-[20rem] h-[20rem]" autoplay loop src="../media/flogons-news-8001.mp4"></video> -->
   </main>
+
+  <!-- P A G E S  -->
+
   <article id="game-rule" class="
     bg-zinc-900
     absolute top-0 left-0
@@ -207,11 +219,22 @@ overflow-hidden
     text-xl
     whitespace-pre-wrap
     ">
-    <button class="absolute top-4 right-4 m-auto py-4 px-16 bg-sky-900 text-3xl rounded-xl">start the game</button>
     <section class="absolute top-0 left-0 grid grid-cols-2 gap-4">
-      <markdown-view class="p-[1rem]" source="" />
-      <markdown-view class="p-[1rem]" source=""/>
+      <markdown-view class="p-[1rem]" source="./sage/side.md"></markdown-view>
+      <markdown-view class="p-[1rem]" source="./sage/rule.md"></markdown-view>
     </section>
+    <button class="
+      absolute
+      top-4
+      left-8
+      m-auto
+      py-4 
+      min-w-[42vw]
+      bg-sky-950
+      text-sky-500
+      text-3xl
+      rounded-xl
+    ">Flogons on the Board! [PLAY]</button>
   </article>
 </body>
 </html>

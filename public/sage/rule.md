@@ -1,5 +1,4 @@
-# Flogon `m a t c h` game rule
-![](./mid/flogon4012.jpeg)
+# `Simple` Match Game Rule
 _You need to be make a pair with the incoming card._
 ```
 // positive number: 
@@ -14,7 +13,7 @@ _You need to be make a pair with the incoming card._
   inverse one
 ```
 You can controll this game by click on `left` `right` or `center` side of screen, or use the key: `<`, `space`,  `>`.
-_The set of card are scrolling left to right and back._
+The set of card are scrolling left to right and back.
 
-## Flogons on the Bridge!
-This game is just a weak copy of the Flogons most sucessfull intergalactic game: the `Throw To Match`. In real setup this game will be play any amount of player.Just sit down on table and throw their card to a middle with a surprising great dexterity.
+![](./mid/flogon4012.jpeg)
+_just the Flogons think it is simple!_

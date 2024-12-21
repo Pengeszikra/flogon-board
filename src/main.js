@@ -348,4 +348,4 @@ const centerCard = () => {
 
 const rulePage = document.querySelector('#game-rule');
 rulePage.querySelector('button').onclick = () => rulePage.classList.add(HIDDEN);
-markerView('./sage/rule.md')
+markerView()

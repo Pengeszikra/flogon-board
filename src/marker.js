@@ -142,11 +142,19 @@
     return colorCode;
   }
 
-export const markerView = (source) => {
+export const markerView = () => {
   customElements.define('markdown-view', class extends HTMLElement {
     constructor() {
       super();
-      fetch(source)
+      const source = this.getAttribute('source');
+      if (source) {
+        console.log('markdown ::', source);
+        this.loadMarkdown(source);
+      }
+    }
+
+    loadMarkdown (file) {
+      fetch(file)
         .then(r => r.text())
         .then(md => this.changeContent(md))
     }
