@@ -2,13 +2,16 @@ import { fragment, signal } from './old-bird-soft';
 import {assetList} from './shoot';
 import {assets} from './asset';
 import {scifiUI} from './ui-elements';
-import {markerView} from "./marker";
+import {setupMarkerViews} from "./marker";
+
+setupMarkerViews()
 
 const initialState = {
   run: '-',
   score: 0,
   scoreTo: 0,
   deck: [],
+  itIsOver: false,
 }
 
 let scroll = 0;
@@ -26,7 +29,6 @@ const toolInitState = {
          // figure out by number tweak
   scrollSpeed: -tableSpeed,
 };
-
 
 const spriteBgImg = index => `url(${spriteSheetList[index]})`;
 
@@ -67,7 +69,7 @@ const storeSprite = () => {
   localStorage.setItem('-shoot-', JSON.stringify(shoot));
 }
 
-const render = (state, ...rest) => {;
+const render = (state) => {;
   scoreIndicator.innerText = state.run;
   highScore.innerText = state.scoreTo;
 } 
@@ -88,7 +90,7 @@ const visual1 = document.querySelector('#visual-1');
 const sprite = document.querySelector('#sprite-sheet');
 const sel = document.getElementById('selector');
 const debug = document.getElementById('monitor');
-const title = document.querySelector('article');
+// const title = document.querySelector('article');
 const nextButton = document.querySelector("button");
 nextButton.classList.add(HIDDEN)
 const scoreIndicator = document.querySelector("#score");
@@ -109,7 +111,7 @@ sprite.onmousemove = (e) => {
   tool.y = offsetY;
 } 
 
-const titleAnim = (goIn) => title.style.left = goIn ? '0' : '100vw' ;
+// const titleAnim = (goIn) => title.style.left = goIn ? '0' : '100vw' ;
 
 const nextDay = () => {
   // state.run = 0;
@@ -189,7 +191,7 @@ const callCard = () => {
     const who = state.deck[id];
     return cardTryToEscape(who);
   } catch (error) { 
-    // E N D
+    state.itIsOver = true;
   }
 }
 
@@ -335,7 +337,11 @@ const centerCard = () => {
   const inHand = Object
     .entries(state.deck)
     .filter(([,{isInHand}]) => isInHand)
-  if (inHand.length < 1) return console.log('E N D'); // E N D
+  if (inHand.length < 1) {
+    const endScreen = document.querySelector('#end-screen');
+    endScreen.classList.remove(HIDDEN);
+    return
+  }
   return inHand
     .reduce((col, itm) => {
       const itmPos = closeToCenter(itm[1].crd.getBoundingClientRect(), center);
@@ -347,5 +353,5 @@ const centerCard = () => {
 }
 
 const rulePage = document.querySelector('#game-rule');
-rulePage.querySelector('button').onclick = () => rulePage.classList.add(HIDDEN);
-markerView()
+rulePage.querySelector('button').onclick = () => 
+    rulePage.classList.add(HIDDEN);

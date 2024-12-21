@@ -142,13 +142,13 @@
     return colorCode;
   }
 
-export const markerView = () => {
+export const setupMarkerViews = () => {
   customElements.define('markdown-view', class extends HTMLElement {
     constructor() {
       super();
       const source = this.getAttribute('source');
       if (source) {
-        console.log('markdown ::', source);
+        // console.log('markdown ::', source);
         this.loadMarkdown(source);
       }
     }

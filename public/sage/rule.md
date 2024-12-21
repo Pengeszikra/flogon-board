@@ -1,19 +1,18 @@
+
 # `Simple` Match Game Rule
-_You need to be make a pair with the incoming card._
+     _( just the Flogons think it is simple! )_
 ```
+Mandatory a pair with the incoming 
+card, according by number:
 // positive number: 
-    odd number with even number
+    the odd with even
 // negative number: 
-    odd with odd and even with even
+    odd with odd & even with even,
+    "combo" when pair with same
 // zero: 
   can be pair with any number, 
-  this is a final movement
-// "combo": 
-  when you pair with the 
-  inverse one
+  "this is a final movement"
 ```
-You can controll this game by click on `left` `right` or `center` side of screen, or use the key: `<`, `space`,  `>`.
-The set of card are scrolling left to right and back.
+You can controll this game by click on `left` `right` or `center` side of screen, or use the key: `<`, `space`,  `>`. Card are `Moving`!
 
 ![](./mid/flogon4012.jpeg)
-_just the Flogons think it is simple!_
