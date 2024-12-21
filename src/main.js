@@ -127,7 +127,7 @@ const toggleUI = () => {
     : body.classList.add("bg-black");
   frg.classList.toggle(HIDDEN);
   sprite.classList.toggle(HIDDEN);
-  debug.classList.toggle(HIDDEN);
+  // debug.classList.toggle(HIDDEN);
   sel.classList.toggle(HIDDEN);
   visual1.classList.toggle(HIDDEN);
   scoreIndicator.classList.add(HIDDEN);
