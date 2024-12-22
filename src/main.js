@@ -5,7 +5,7 @@ import {scifiUI} from './ui-elements';
 import {setupMarkerViews} from "./marker";
 
 let scroll = 0;
-const tableSpeed = 0;
+const tableSpeed = 2;
 const HIDDEN = "hidden";
 
 /** 
@@ -38,7 +38,7 @@ const initialState = {
   scoreTo: 0,
   deck: [],
   itIsOver: false,
-  scrollSpeed: -tableSpeed,
+  scrollSpeed: tableSpeed,
   img: "",
 }
 
@@ -56,13 +56,12 @@ const toolInitState = {
 const spriteBgImg = index => `url(${spriteSheetList[index]})`;
 
 const dice = (side = 6) => Math.random() * side + 1 | 0;
-// const rnd = (side = 6) => Math.random() * side | 0;
 
 const drawSprite = ({
   x, y, w, h, 
   m = toolInitState.m, 
   n = toolInitState.n, 
-  sheetIndex =0
+  sheetIndex = 0
 }) => (frg) => {
   frg.style.width = `${w}rem`;
   frg.style.height = `${h}rem`;
@@ -96,15 +95,9 @@ const storeSprite = () => {
 const render = (state) => {;
   // scoreIndicator.innerText = state.run;
   highScore.innerText = state.scoreTo;
-  const {score, run, img, opponent = []} = state;
-  log({score, run, img})
+  const {score, run, img, scrollSpeed} = state;
+  log({score, run, img, scrollSpeed})
 
-  // if (opponent.length) {
-  //   topCard.classList.remove(HIDDEN);
-  //   drawSprite(opponent.at(-1).value)(topCard); 
-  // } else {
-  //   topCard.classList.add(HIDDEN);
-  // }
 } 
 
 const state = signal(render)(initialState);
