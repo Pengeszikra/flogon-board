@@ -4,8 +4,6 @@ import {assets} from './asset';
 import {scifiUI} from './ui-elements';
 import {setupMarkerViews} from "./marker";
 
-setupMarkerViews();
-
 let scroll = 0;
 const tableSpeed = 2;
 const HIDDEN = "hidden";
@@ -98,13 +96,21 @@ const storeSprite = () => {
 const render = (state) => {;
   // scoreIndicator.innerText = state.run;
   highScore.innerText = state.scoreTo;
-  const {score, run, img, opponent} = state;
+  const {score, run, img, opponent = []} = state;
   log({score, run, img})
-  if (true){}
+
+  // if (opponent.length) {
+  //   topCard.classList.remove(HIDDEN);
+  //   drawSprite(opponent.at(-1).value)(topCard); 
+  // } else {
+  //   topCard.classList.add(HIDDEN);
+  // }
 } 
 
 const state = signal(render)(initialState);
 const tool = signal(toolRender)(toolInitState);
+
+setupMarkerViews();
 
 // globalThis.state = state;
 
@@ -128,9 +134,8 @@ const scoreIndicator = document.querySelector("#score");
 const highScore = document.querySelector("#high-score");
 const desk = document.querySelector("#desk");
 
-const topCard = fragment("#card", "main", "top");
-
-topCard.style.backgroundImage = `ur()`;
+// const topCard = fragment("#card", "main", "top");
+// topCard.classList.add(HIDDEN);
 
 const log = info => debug.innerText = JSON.stringify(info);
 
@@ -274,7 +279,7 @@ state.opponent = opponentSet.map((value, idx) => {
   // const score = dice(50) * 10 + 10;
   const power = value - 11
   opp.querySelector('div').innerText = power;
-  return {opp, order, power, idx};
+  return {opp, order, power, idx, value};
 });
 
 const flyOut = (order) => [
@@ -412,8 +417,10 @@ const centerCard = () => {
     .entries(state.deck)
     .filter(([,{isInHand}]) => isInHand)
   if (inHand.length < 1) {
+    // globalThis.finalScore = state.score;
     const endScreen = document.querySelector('#end-screen');
     endScreen.classList.remove(HIDDEN);
+    endScreen.querySelector('#score-board').innerHTML = `score: ${state.score}`;
     return
   }
   return inHand

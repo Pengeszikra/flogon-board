@@ -130,7 +130,7 @@
           case /\{\%\s*([^%]+)\s*\%\}/.test(line):
             return line.replaceAll(
               /(\{\%\s+)([^%]+)(\s+\%\})/g,
-              `x`
+              `globalThis.finalScore`
             )
           default:
             return inlineMarkdown(line);
