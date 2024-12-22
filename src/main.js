@@ -98,13 +98,15 @@ const storeSprite = () => {
 const render = (state) => {;
   // scoreIndicator.innerText = state.run;
   highScore.innerText = state.scoreTo;
-  const {score, run, img} = state;
+  const {score, run, img, opponent} = state;
   log({score, run, img})
+  if (true){}
 } 
 
 const state = signal(render)(initialState);
 const tool = signal(toolRender)(toolInitState);
-globalThis.state = state;
+
+// globalThis.state = state;
 
 const questImageList = Array(295).fill('../mid/flogon')
   .map((fn, idx) => fn + (4000 + idx) + '.jpeg')
@@ -125,6 +127,10 @@ nextButton.classList.add(HIDDEN)
 const scoreIndicator = document.querySelector("#score");
 const highScore = document.querySelector("#high-score");
 const desk = document.querySelector("#desk");
+
+const topCard = fragment("#card", "main", "top");
+
+topCard.style.backgroundImage = `ur()`;
 
 const log = info => debug.innerText = JSON.stringify(info);
 
@@ -287,19 +293,14 @@ const flyOut = (order) => [
 const flyToMatch = (order) => [
   `translateX(0rem)              translateY(-22rem) scale(3) translateZ(7rem)   rotateX(-50deg)   `, 
   `translateX(${order/1.3}rem)   translateY(0rem)   scale(3) translateZ(12rem)   rotateX(-60deg)`,
-  // `translateX(${order/1.2}rem)   translateY(32rem)  scale(3) translateZ(13rem)  rotateX(-60deg)`,
   `translateX(${order/1.1}rem)   translateY(35rem)  scale(3) translateZ(14rem)  rotateX(-60deg)`,
   `translateX(${order * 1.1}rem)   translateY(39rem)  scale(3) translateZ(15rem)  rotateX(-60deg)`,
-  // `translateX(${order * 1.3}rem)       translateY(38rem)  scale(3) translateZ(16rem)  rotateX(-55deg)`,
-  // `translateX(${order * 1.1}rem) translateY(27rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
-  // `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
   `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
   `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
   `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
   `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
   `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
   `translateX(${order}rem)       translateY(22rem)  scale(3) translateZ(1rem)  rotateX(0deg)`,
-  // `translateX(${x}rem) translateY(70rem)  scale(3) translateZ(-80rem) rotateX(-60deg)`,
 ]
 
 /** @type {(who:Card) => void} */
@@ -340,7 +341,6 @@ const calcScore = (play, base) => {
   ...assets,
   ...assets,
   ...assets,
-  // ...scifiUI,
   // ...assets
 ].map((src, idx) => {
   const frg = fragment("#mob", "#desk", `frg-${5000 + idx}`);
@@ -431,3 +431,4 @@ rulePage.querySelector('button').onclick = () =>
     rulePage.classList.add(HIDDEN);
 
 nextDay();
+

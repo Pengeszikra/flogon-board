@@ -8,10 +8,11 @@ card, according by number:
     the odd with even
 // negative number: 
     odd with odd & even with even,
-    "combo" when pair with same
+// positie with negative counterpart
+    triple amount of score
 // zero: 
   can be pair with any number, 
-  "this is a final movement"
+  "final movement when played"
 ```
 You can controll this game by click on `left` `right` or `center` side of screen, or use the key: `<`, `space`,  `>`. Card are `Moving`!
 
