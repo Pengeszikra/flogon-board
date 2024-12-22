@@ -302,11 +302,10 @@ const flyToMatch = (order) => [
   // `translateX(${x}rem) translateY(70rem)  scale(3) translateZ(-80rem) rotateX(-60deg)`,
 ]
 
-  
 /** @type {(who:Card) => void} */
 const callCardToPlay = async(who) => {
   const cardSpeed = 200;
-  const {crd, order} = who;
+  const {crd, order, power} = who;
   const {opp, power: opw} = state.opponent.pop();
   // console.log(opp, opw);
   const sequence = [...flyOut(order)];
@@ -318,10 +317,24 @@ const callCardToPlay = async(who) => {
     opp.style.transition = `transform ${cardSpeed}ms linear`;
     crd.style.transform = ani;
     opp.style.transform = aoo; 
-    if (sequence.length === 4) { state.score += dice(10) * 10;}
+    if (sequence.length === 4) { 
+      state.score += calcScore(power, opw);
+    }
     if (!sequence.length) { clearInterval(stop) }
   }, cardSpeed);
 };
+
+/** @type {(play:number, base:number) => number} */
+const calcScore = (play, base) => {
+  switch (true) {
+    case  (play > 0 && base > 0 && play % 2 !== base % 2): return 10 * (+ play + base);
+    case  (play < 0 && base < 0 && play % 2 === base % 2): return 10 * (- play - base);
+    case  (play === - base): return 20 * Math.abs(play - base);
+    case  (play === 0 ): return 50 * Math.abs(base);
+    case  (base === 0 ): return 50 * Math.abs(play);
+    default: return 0;
+  }
+}
 
 [
   ...assets,
