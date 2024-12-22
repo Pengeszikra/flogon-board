@@ -5,7 +5,7 @@ import {scifiUI} from './ui-elements';
 import {setupMarkerViews} from "./marker";
 
 let scroll = 0;
-const tableSpeed = 2;
+const tableSpeed = 0;
 const HIDDEN = "hidden";
 
 /** 
@@ -214,13 +214,13 @@ document.addEventListener("keydown",
       case "v": return storeSprite();
       // case "ArrowLeft":
       case ",":
-      case ";": return state.scrollSpeed = + tableSpeed;
+      case ";": return state.scrollSpeed = state.scrollSpeed === 0 ? + tableSpeed : 0;
       // case "ArrowUp":
       case " ":
       case "'": callCard(); return state.scrollSpeed =   0;
       // case "ArrowRight":
       case ".":
-      case "\\": return state.scrollSpeed = - tableSpeed;
+      case "\\": return state.scrollSpeed = state.scrollSpeed === 0 ? - tableSpeed : 0; 
     }
   }
 );

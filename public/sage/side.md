@@ -1,8 +1,13 @@
 
 
 
-![](./mid/flogon4004.jpeg)
-## Who is the Flogons?
-Flogons is a most succesfull space traders and travel agency in the galaxy. Their secret skill give a power to reach even the farest place in the universe. Our knwoledge is included in this game, sooner or later we decide to share these information after every quick & dirty gameplay.
+# `Simple` Match Game Rule
+On the long table the player have 23 cards in a line. On center have a same deck of 23 card shuffled. This is a single player dexterity based table top game. The main goal is get as much score as possible.
 
-Don't surprise but he can `survive` a few hours in the space without any equipment. Flogons are natural `shapechanger`, when need a extra arm then make it. Many times when rest their arms are disappear.
+Possible interaction: 
+  - scroll the table left or right
+  - stop scrolling the table on second click on same direction 
+  - call a card : try pairing the card which is closest to center.
+    can call a card even if don't see on screen. this call are try to pair a called card with a deck top card.
+
+![](./mid/flogon4164.jpeg)
