@@ -95,9 +95,9 @@ const storeSprite = () => {
 const render = (state) => {;
   // scoreIndicator.innerText = state.run;
   highScore.innerText = state.scoreTo;
-  const {score, run, img, scrollSpeed} = state;
+  const {score, run, img, scrollSpeed, opponent} = state;
   log({score, run, img, scrollSpeed})
-
+  // topNumber.innerText = 392 /opponent.at(-1)?.power;
 } 
 
 const state = signal(render)(initialState);
@@ -126,9 +126,8 @@ nextButton.classList.add(HIDDEN)
 const scoreIndicator = document.querySelector("#score");
 const highScore = document.querySelector("#high-score");
 const desk = document.querySelector("#desk");
-
-// const topCard = fragment("#card", "main", "top");
-// topCard.classList.add(HIDDEN);
+const centerNumber = document.querySelector("#center-number");
+const topNumber = document.querySelector("#top-number");
 
 const log = info => debug.innerText = JSON.stringify(info);
 
@@ -169,25 +168,13 @@ const toggleUI = () => {
   desk.classList.toggle(HIDDEN);
 }
 
-nextButton.onclick = nextDay;
-
-
-/** @type {HTMLElement} */
-document.querySelector("#left-side").onclick = () => state.scrollSpeed = + tableSpeed;
-document.querySelector("#center-area").onclick = () => {
-  callCard();
-  state.scrollSpeed = 0;
-}
-document.querySelector("#right-side").onclick = () => state.scrollSpeed = - tableSpeed;
-
 document.addEventListener("keydown", 
   /** @type {(event:KeyboardEvent) => void} */
   (event) => {
     const {key} = event;
     switch (key) {
       case "c": return drag = !drag; 
-      // case ",": return titleAnim(true);
-      // case ".": return titleAnim(false);
+
       case "n": return nextDay();
       case "z": return toggleUI();
       case "[": return selectSheet(-1);
@@ -205,18 +192,42 @@ document.addEventListener("keydown",
       case "k": return tool.n ++;
       case "l": return tool.n --;
       case "v": return storeSprite();
-      // case "ArrowLeft":
+
       case ",":
-      case ";": return state.scrollSpeed = state.scrollSpeed === 0 ? + tableSpeed : 0;
-      // case "ArrowUp":
+      case ";": return interactionToLeft();
+
       case " ":
-      case "'": callCard(); return state.scrollSpeed =   0;
-      // case "ArrowRight":
+      case "'": return interactionCallCard();
+
       case ".":
-      case "\\": return state.scrollSpeed = state.scrollSpeed === 0 ? - tableSpeed : 0; 
+      case "\\": return interactionToRight();
     }
   }
 );
+
+const interactionToLeft = () => {
+  state.scrollSpeed = ( state.scrollSpeed === 0 ) 
+  ? + tableSpeed 
+  : 0
+  ;
+};
+
+const interactionToRight = () => {
+  state.scrollSpeed = ( state.scrollSpeed === 0 )
+    ? - tableSpeed 
+    : 0
+    ; 
+};
+
+const interactionCallCard = () => {
+  callCard();
+  state.scrollSpeed =   0;
+};
+
+/** @type {HTMLElement} */
+document.querySelector("#left-side").onclick = interactionToLeft;
+document.querySelector("#center-area").onclick = interactionCallCard;
+document.querySelector("#right-side").onclick = interactionToRight;
 
 const callCard = () => {
   const [id] = centerCard() || [];
@@ -410,7 +421,6 @@ const centerCard = () => {
     .entries(state.deck)
     .filter(([,{isInHand}]) => isInHand)
   if (inHand.length < 1) {
-    // globalThis.finalScore = state.score;
     const endScreen = document.querySelector('#end-screen');
     endScreen.classList.remove(HIDDEN);
     endScreen.querySelector('#score-board').innerHTML = `score: ${state.score}`;
