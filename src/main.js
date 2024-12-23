@@ -406,7 +406,15 @@ body.onmouseleave = () => {
 }
 
 const highScoreAnim = () => {
-  if (state.scoreTo < state.score) state.scoreTo += 5;  
+  if (state.scoreTo < state.score) state.scoreTo += 5;
+  if (state?.opponent?.length) {
+    topNumber.innerHTML = state.opponent.at(-1).power;
+  }
+  const [id] = centerCard() || [];
+  if (state?.deck?.[id]) {
+    centerNumber.innerHTML = state.deck[id].power;
+  }
+
   requestAnimationFrame(highScoreAnim);
 }
 requestAnimationFrame(highScoreAnim);
