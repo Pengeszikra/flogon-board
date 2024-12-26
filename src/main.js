@@ -336,12 +336,13 @@ const callCardToPlay = async(who) => {
 
 /** @type {(play:number, base:number) => number} */
 const calcScore = (play, base) => {
+  const MULTIPLIER = 100;
   switch (true) {
-    case  (play > 0 && base > 0 && play % 2 !== base % 2): return 10 * (+ play + base);
-    case  (play < 0 && base < 0 && play % 2 === base % 2): return 10 * (- play - base);
-    case  (play === - base): return 20 * Math.abs(play - base);
-    case  (play === 0 ): return 50 * Math.abs(base);
-    case  (base === 0 ): return 50 * Math.abs(play);
+    case  (play > 0 && base > 0 && play % 2 !== base % 2): return MULTIPLIER * (+ play + base);
+    case  (play < 0 && base < 0 && play % 2 === base % 2): return MULTIPLIER * (- play - base);
+    case  (play === - base): return 2 * MULTIPLIER * Math.abs(play - base);
+    case  (play === 0 ): return 5 * MULTIPLIER * Math.abs(base);
+    case  (base === 0 ): return 5 * MULTIPLIER * Math.abs(play);
     default: return 0;
   }
 }
@@ -406,7 +407,7 @@ body.onmouseleave = () => {
 }
 
 const highScoreAnim = () => {
-  if (state.scoreTo < state.score) state.scoreTo += 5;
+  if (state.scoreTo < state.score) state.scoreTo += 50;
   if (state?.opponent?.length) {
     topNumber.innerHTML = state.opponent.at(-1).power;
   }
