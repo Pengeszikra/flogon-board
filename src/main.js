@@ -115,12 +115,12 @@ const spriteSheetList = Array(37).fill('../sheets/sprite-')
   .map((fn, idx) => fn + (7000 + idx) + '.png')
 
 let counter = 0;
+
 const body = document.querySelector('body');
 const visual1 = document.querySelector('#visual-1');
 const sprite = document.querySelector('#sprite-sheet');
 const sel = document.getElementById('selector');
 const debug = document.getElementById('monitor');
-// const title = document.querySelector('article');
 const nextButton = document.querySelector("button");
 nextButton.classList.add(HIDDEN)
 const scoreIndicator = document.querySelector("#score");
@@ -128,6 +128,7 @@ const highScore = document.querySelector("#high-score");
 const desk = document.querySelector("#desk");
 const centerNumber = document.querySelector("#center-number");
 const topNumber = document.querySelector("#top-number");
+const headupDisplay = document.querySelector("#headup-display");
 
 const log = info => debug.innerText = JSON.stringify(info);
 
@@ -163,8 +164,9 @@ const toggleUI = () => {
   // debug.classList.toggle(HIDDEN);
   sel.classList.toggle(HIDDEN);
   visual1.classList.toggle(HIDDEN);
-  scoreIndicator.classList.add(HIDDEN);
-  highScore.classList.add(HIDDEN)
+  // scoreIndicator.classList.add(HIDDEN);
+  headupDisplay.classList.toggle(HIDDEN);
+
   desk.classList.toggle(HIDDEN);
 }
 
