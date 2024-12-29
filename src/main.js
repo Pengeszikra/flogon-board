@@ -144,6 +144,7 @@ sprite.onmousemove = (e) => {
 const nextDay = () => {
   const img = questImageList[counter % questImageList.length];
   state.img = img;
+  console.log(`current BG is: ${img}`);
   visual1.style.backgroundImage = `url(${img})`;
   counter ++ ;
 };
