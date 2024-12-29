@@ -148,3 +148,8 @@ await redis.hset(myPostId, {[index.toString()]: ....})
 
 await redis.hgetall(myPostId);
 ```
+
+## Redit Chanels
+I don't know how working the reddit channel moderators decision, all of my post is deleted and I really don't know the real reason, even if I just ask a question. Bit Absurd. At least someone answered to my trailer as no human touch part of it, which is really not true. But I don't have a time to arguing pro or const. That is a bit uppset me.
+
+The Devvit Webview communication I did not able to setup. But I am run out of times, so I will focus to the AWS hackhaton. Right now 2024.12.29 night.
