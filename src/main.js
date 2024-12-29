@@ -442,10 +442,15 @@ rulePage.querySelector('button').onclick = () => rulePage.classList.add(HIDDEN);
 
 nextDay();
 
-window.addEventListener('message', (ev) => {
-  const { type, data } = ev.data;
-  log({type, data})
-  console.log('message channel --> ', {type, data});
+globalThis.addEventListener('message', (e) => {
+  try {
+    const {type, data} = e;
+    log({type, data})
+    console.log('message channel --> ', e);    
+  } catch (error) {
+    console.error(error);
+  }
+
   // if (type === 'devvit-message') {
   //   const { message } = data;
   //   if (message.type === 'updateHighScores') {
