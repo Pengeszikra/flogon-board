@@ -29,6 +29,14 @@ Devvit.addCustomPostType({
       return Number(redisCount ?? 0);
     });
 
+    context.ui.webView.postMessage(appId, {
+      type: 'initialData',
+      data: {
+        username: username,
+        currentScore: 0,
+      },
+    });
+
     const onMessage = async (msg: WebViewMessage) => {
       // console.log('onMessage', msg);
       switch (msg.type) {
@@ -65,3 +73,5 @@ Devvit.addCustomPostType({
 });
 
 export default Devvit;
+
+
