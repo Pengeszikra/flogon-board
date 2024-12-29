@@ -95,7 +95,7 @@ const storeSprite = () => {
 const render = (state) => {;
   highScore.innerText = state.scoreTo;
   const {score, run, img, scrollSpeed} = state;
-  // log({score, run, img, scrollSpeed})
+  log({score, run, img, scrollSpeed})
 } 
 
 const state = signal(render)(initialState);
@@ -215,7 +215,7 @@ const interactionToRight = () => {
 
 const interactionCallCard = () => {
   callCard();
-  // state.scrollSpeed = 0;
+  state.scrollSpeed = 0;
 };
 
 /** @type {HTMLElement} */
@@ -442,11 +442,11 @@ rulePage.querySelector('button').onclick = () => rulePage.classList.add(HIDDEN);
 
 nextDay();
 
-globalThis.addEventListener('message', (e) => {
+window.addEventListener('message', (e) => {
   try {
     const {type, data} = e;
-    log({type, data})
-    console.log('message channel --> ', e);
+    log(data)
+    // console.log('message channel --> ', e);
   } catch (error) {
     console.error(error);
   }
