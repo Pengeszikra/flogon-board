@@ -1,69 +1,48 @@
-## `:: Rule ::`
-```js
-Mandatory a pair with the incoming 
-card, according by number:
-// positive number: 
-    the odd with even
-// negative number: 
-    odd with odd & even with even,
-    "combo" when pair with same
-// zero: 
-  can be pair with any number, 
-  "this is a final movement"
-```
+## Game Rule
 
-You can controll this game by click on left right or center side of screen, or use the key: <, space,  >. Card are Moving!
+### The setup
+On the long table the player have 23 cards in a line. On center have a same deck of 23 card shuffled.
+This is a single player dexterity based table top game. The main goal is get as much score as possible.
 
-For the maximum profit need to be close the RUN score to :: `42`
-Under each step draw one card some help some cause problem.
-The profit depend on the solved problem score.
-Which is need to be a 42. If more you gain more score then it will be fail.
+### Possible interaction:
+- scroll the table left or right stop scrolling the table on second click on same direction
+- call a card : try pairing the card which is closest to center. can call a card even if don't see on screen. this call are try to pair a called card with a deck top card.
+
+### Pairing rule:
+- Two positive card, you get score if pair odd number with even number
+- Two negative card, you get score if pair odd negative number with odd negative number
+- If the same positive number paired with negative counterpart then you get a better score
+- Zero card can pair with any card. If you call your zero card then over then gameplay.
+
+### Speed of Game
+Finally the speed is also important in this game. The final score gaining a further bonus if solve a run under short times!
+
+### Next Release
+The next release will be play a multi player version, where the center deck is common. There the timing is bit tricky, but I am working on the perfect solution.
 
 ![](./public/mid/flogon4217.jpeg)
 
-But where is this rule? Really great question. 
-
-This game is just a weak copy of the Flogons most sucessfull intergalactic game:
-the "Throw To Match". In real setup this game will be play any amount of player.
-Just sit down on table and throw their card to a middle with a surprising great 
-dexterity.
-
-Meanwhile the small figure step ahead on a small table to reach the 
-> UHN :: Universal Harmony Number :: 42!
-And thats all!
-
-## TODO after a final `night`
-- [+] Simplify the Devvit frame
-```javascript
-import './createPost.js';
-import { Devvit } from '@devvit/public-api';
-
-Devvit.addCustomPostType({
-  name: 'Flogons: Match to 42',
-  height: 'tall',
-  render: () => <webview id="FlogonMatchWebView" url="index.html" grow height={'100%'} />
-});
 
 export default Devvit;
 ```
-- [-] rework spritesheet to percentage
-- [...] `implement the game` a good one.
+- [+] `implement the game` a good one.
 - [+] Add number to card
 - [+] Shuffle the deck
 - [+] game rule screen
-- [...] test the game
+- [+] test the game
 - [-] `make image switch animation` when change scroll direction then change the image.
 - [?] Select a proper background images
-- [??] make a table where the player can move on 
+- [-] make a table where the player can move on 
 - [...] connect my program to a `devvit`
   - [...] `create content`
   - [-] Try to use a database for something.
   - [-] Make a post message with a image after run.
 - [+] create how can I play with this game 
 - [+] implement `M A R K E R` for info
-- [...] create a sage who can tell about Flogons
+- [-] create a sage who can tell about Flogons
 - [+] create intro : Pitch
 - [+] advertise on social platform
+- [-] rework spritesheet to percentage
 
 # Flogons on the Bridge!
 
@@ -109,24 +88,6 @@ Wellness Pod
 
 The right solution is webviews!
 
-## Game Rule
-
-For the maximum profit need to be close the `RUN` score to :: `42`
-Under each step draw one card some help some cause problem, 
-and the profit depend on the solved problem score.
-Which is need to be a 42. If more you are fail. That's all.
-This is a good plane, but at the end we going to another direction.
-
-- open the app
-- make a few stepp on the table
-- facing some story element
-- finally get a badges, coins, image
-- have option to listen a story of Flogon
-- mem generation ?
-- [+] game animation
-- story animation
-- [+] need to play with a card?
-
 ## Flogon abilities:
 - dream travel with quantum symmetry
 - shape change
@@ -161,25 +122,6 @@ export default defineConfig({
     emptyOutDir: true,
   }
 });
-```
-
-## Content Security Policy on Reddit
-
-```
-HTTP header
-default-src: 'self'
-form-action: 'none'
-object-src: 'none'
-script-src: 'self', webview.devvit.net, webview-dev.devvit.net, 'wasm-unsafe-eval'
-style-src: 'self', webview.devvit.net, webview-dev.devvit.net, 'unsafe-inline'
-font-src: 'self', webview.devvit.net, webview-dev.devvit.net, *.redditmedia.com, *.redditstatic.com, fonts.gstatic.com, data:, blob:
-frame-ancestors: 'self', *.reddit.com, *.snooguts.net, *.snoo.dev
-connect-src: 'self', webview.devvit.net, webview-dev.devvit.net, *.redditmedia.com, *.redditstatic.com, *.redd.it, blob:
-img-src: 'self', webview.devvit.net, webview-dev.devvit.net, *.redditmedia.com, *.redditstatic.com, *.redd.it, data:, blob:
-media-src: 'self', webview.devvit.net, webview-dev.devvit.net, *.redditmedia.com, *.redditstatic.com, *.redd.it, data:, blob:
-worker-src: 'self', webview.devvit.net, webview-dev.devvit.net, data:, blob:
-report-to: csp
-report-uri: https://w3-reporting-csp.reddit.com/reports
 ```
 
 ## Video Generation

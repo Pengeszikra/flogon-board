@@ -31,7 +31,10 @@ Devvit.addCustomPostType({
     const onMessage = async (msg: WebViewMessage) => {
       switch (msg.type) {
         case 'setScore':
-          await context.redis.set(`score_${context.postId}`, msg.data.newScore.toString());
+          await context.redis.set(
+            `score_${context.postId}`, 
+            msg.data.newScore.toString()
+          );
           context.ui.webView.postMessage('myWebView', {
             type: 'updateScore',
             data: { currentScore: msg.data.newScore },
