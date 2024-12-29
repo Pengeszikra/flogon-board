@@ -3,6 +3,7 @@ import './createPost.js';
 import { Devvit, useState } from '@devvit/public-api';
 
 const appName = 'Flogons: Match to 42';
+const appId = 'FlogonMatchWebView';
 
 export type WebViewMessage =
   | { type: 'initialData'; data: { username: string; currentScore: number }; }
@@ -36,7 +37,7 @@ Devvit.addCustomPostType({
             `score_${context.postId}`, 
             msg.data.newScore.toString()
           );
-          context.ui.webView.postMessage('myWebView', {
+          context.ui.webView.postMessage(appId, {
             type: 'updateScore',
             data: { currentScore: msg.data.newScore },
           });
@@ -53,10 +54,10 @@ Devvit.addCustomPostType({
 
     return (
       <webview
-        id="FlogonMatchWebView"
-        url="index.html"
+        id = {appId}
+        url = "index.html"
         grow
-        height={'100%'}
+        height = {'100%'}
         onMessage={(msg) => onMessage(msg as WebViewMessage)}
       />
     )

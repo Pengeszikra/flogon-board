@@ -444,7 +444,7 @@ nextDay();
 
 window.addEventListener('message', (e) => {
   try {
-    const {type, data} = e;
+    const {data} = e;
     log(data)
     // console.log('message channel --> ', e);
   } catch (error) {
