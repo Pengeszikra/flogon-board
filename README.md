@@ -34,9 +34,11 @@ export default Devvit;
 - [?] Select a proper background images
 - [-] make a table where the player can move on 
 - [...] connect my program to a `devvit`
-  - [...] `create content`
+  
+  - [-] `create content`
   - [-] Try to use a database for something.
   - [-] Make a post message with a image after run.
+- [...] New Game without reload
 - [+] create how can I play with this game 
 - [+] implement `M A R K E R` for info
 - [-] create a sage who can tell about Flogons

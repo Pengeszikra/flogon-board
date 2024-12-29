@@ -93,11 +93,9 @@ const storeSprite = () => {
 
 /** @type {(state:State) => void} */
 const render = (state) => {;
-  // scoreIndicator.innerText = state.run;
   highScore.innerText = state.scoreTo;
-  const {score, run, img, scrollSpeed, opponent} = state;
-  log({score, run, img, scrollSpeed})
-  // topNumber.innerText = 392 /opponent.at(-1)?.power;
+  const {score, run, img, scrollSpeed} = state;
+  // log({score, run, img, scrollSpeed})
 } 
 
 const state = signal(render)(initialState);
@@ -123,7 +121,6 @@ const sel = document.getElementById('selector');
 const debug = document.getElementById('monitor');
 const nextButton = document.querySelector("button");
 nextButton.classList.add(HIDDEN)
-const scoreIndicator = document.querySelector("#score");
 const highScore = document.querySelector("#high-score");
 const desk = document.querySelector("#desk");
 const centerNumber = document.querySelector("#center-number");
@@ -142,15 +139,11 @@ sprite.onmousemove = (e) => {
   // screenX, screenY, clientX, clientY, 
   tool.x = offsetX;
   tool.y = offsetY;
-} 
-
-// const titleAnim = (goIn) => title.style.left = goIn ? '0' : '100vw' ;
+}
 
 const nextDay = () => {
-  // state.run = 0;
   const img = questImageList[counter % questImageList.length];
   state.img = img;
-  
   visual1.style.backgroundImage = `url(${img})`;
   counter ++ ;
 };
@@ -161,10 +154,8 @@ const toggleUI = () => {
     : body.classList.add("bg-black");
   frg.classList.toggle(HIDDEN);
   sprite.classList.toggle(HIDDEN);
-  // debug.classList.toggle(HIDDEN);
   sel.classList.toggle(HIDDEN);
   visual1.classList.toggle(HIDDEN);
-  // scoreIndicator.classList.add(HIDDEN);
   headupDisplay.classList.toggle(HIDDEN);
 
   desk.classList.toggle(HIDDEN);
@@ -422,8 +413,6 @@ const highScoreAnim = () => {
 }
 requestAnimationFrame(highScoreAnim);
 
-// new Audio('../media/James-8000.mp3').play();
-
 const closeToCenter = (pos, center) => Math.abs(center - (pos.left + pos.width / 2));
 /** @type {() => Card} */
 const centerCard = () => {
@@ -448,8 +437,18 @@ const centerCard = () => {
 }
 
 const rulePage = document.querySelector('#game-rule');
-rulePage.querySelector('button').onclick = () => 
-    rulePage.classList.add(HIDDEN);
+rulePage.querySelector('button').onclick = () => rulePage.classList.add(HIDDEN);
 
 nextDay();
 
+window.addEventListener('message', (ev) => {
+  const { type, data } = ev.data;
+  log({type, data})
+  // if (type === 'devvit-message') {
+  //   const { message } = data;
+  //   if (message.type === 'updateHighScores') {
+  //     // Update your UI with the new high scores
+  //     updateHighScoresDisplay(message.data.highScores);
+  //   }
+  // }
+});

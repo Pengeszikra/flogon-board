@@ -4,7 +4,7 @@ import { Devvit, useState } from '@devvit/public-api';
 
 const appName = 'Flogons: Match to 42';
 
-type WebViewMessage =
+export type WebViewMessage =
   | { type: 'initialData'; data: { username: string; currentScore: number }; }
   | { type: 'setScore'; data: { newScore: number }; }
   | { type: 'updateScore'; data: { currentScore: number }; };
