@@ -444,6 +444,7 @@ nextDay();
 window.addEventListener('message', (ev) => {
   const { type, data } = ev.data;
   log({type, data})
+  console.log('message channel --> ', {type, data});
   // if (type === 'devvit-message') {
   //   const { message } = data;
   //   if (message.type === 'updateHighScores') {
