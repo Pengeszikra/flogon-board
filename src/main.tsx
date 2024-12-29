@@ -29,6 +29,7 @@ Devvit.addCustomPostType({
     });
 
     const onMessage = async (msg: WebViewMessage) => {
+      console.log('onMessage', msg);
       switch (msg.type) {
         case 'setScore':
           await context.redis.set(

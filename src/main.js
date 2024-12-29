@@ -446,7 +446,7 @@ globalThis.addEventListener('message', (e) => {
   try {
     const {type, data} = e;
     log({type, data})
-    console.log('message channel --> ', e);    
+    console.log('message channel --> ', e);
   } catch (error) {
     console.error(error);
   }
