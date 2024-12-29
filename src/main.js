@@ -215,7 +215,7 @@ const interactionToRight = () => {
 
 const interactionCallCard = () => {
   callCard();
-  state.scrollSpeed =   0;
+  // state.scrollSpeed = 0;
 };
 
 /** @type {HTMLElement} */
