@@ -1,50 +1,54 @@
-## TODO 4 a final `night`
-- [+] MIT license
-- [-] rework spritesheet to percentage
-- [...] `implement the game` a good one.
-- [?] Add number to card
-- [?] Shuffle the deck
-- [...] test the game
+## Game Rule
+
+## The Series next game is...
+[FLOGON-GALAXY](https://flogon-galaxy.vercel.app/)
+Their repo next of it. And that is also contain this game none redit version.
+
+### The setup
+On the long table the player have 23 cards in a line. On center have a same deck of 23 card shuffled.
+This is a single player dexterity based table top game. The main goal is get as much score as possible.
+
+### Possible interaction:
+- scroll the table left or right stop scrolling the table on second click on same direction
+- call a card : try pairing the card which is closest to center. can call a card even if don't see on screen. this call are try to pair a called card with a deck top card.
+
+### Pairing rule:
+- Two positive card, you get score if pair odd number with even number
+- Two negative card, you get score if pair odd negative number with odd negative number
+- If the same positive number paired with negative counterpart then you get a better score
+- Zero card can pair with any card. If you call your zero card then over then gameplay.
+
+### Speed of Game
+Finally the speed is also important in this game. The final score gaining a further bonus if solve a run under short times!
+
+### Next Release
+The next release will be play a multi player version, where the center deck is common. There the timing is bit tricky, but I am working on the perfect solution.
+
+![](./public/mid/flogon4217.jpeg)
+
+
+export default Devvit;
+```
+- [+] `implement the game` a good one.
+- [+] Add number to card
+- [+] Shuffle the deck
+- [+] game rule screen
+- [+] test the game
 - [-] `make image switch animation` when change scroll direction then change the image.
 - [?] Select a proper background images
-- [??] make a table where the player can move on 
-- [+] make the card animation
-- [...] `create content`
-- [+] side scroll animation
-- [+] Media import test
+- [-] make a table where the player can move on
 - [...] connect my program to a `devvit`
-- [-] Try to use a database for something.
-- [-] Make a post message with a image after run.
-- [+] figure out how much focus enough for devvit.
-- redy for commit the release
-- create 1 min `pitch` video
-- [+] `commit` my project on `devpost`
-- [...] make my channel to `public`
-- [?] create intro
-- [?] create how can I play with this game 
-- [?] create a sage who can tell about Flogans
-  - [+] sound are tested.
-- [...] separate editor from the game code
-- [?] advertise on social platform
 
-## `:: Rule ::`
-For the maximum profit need to be close the RUN score to :: `42`
-Under each step draw one card some help some cause problem.
-The profit depend on the solved problem score.
-Which is need to be a 42. If more you gain more score then it will be fail.
-
-But where is this rule? Really great question. 
-
-This game is just a weak copy of the Flogons most sucessfull intergalactic game:
-the "Throw To Match". In real setup this game will be play any amount of player.
-Just sit down on table and throw their card to a middle with a surprising great 
-dexterity.
-
-Meanwhile the small figure step ahead on a small table to reach the 
-UHN :: Universal Harmony Number :: 42!
-
-And thats all!
-
+  - [-] `create content`
+  - [-] Try to use a database for something.
+  - [-] Make a post message with a image after run.
+- [...] New Game without reload
+- [+] create how can I play with this game
+- [+] implement `M A R K E R` for info
+- [-] create a sage who can tell about Flogons
+- [+] create intro : Pitch
+- [+] advertise on social platform
+- [-] rework spritesheet to percentage
 
 # Flogons on the Bridge!
 
@@ -52,10 +56,9 @@ Flogons on the Bridge! is a chaotic, hilarious social tabletop game where every 
 
 ## Who is the Flogons?
 Flogons is a most succesfull space trader in the galaxy.
-Their secret skill give a power to reach even the farest place in the universe.
-Our broader knwoledge is included in this game, after every turn you get a piece of information.
+Their secret skill give a power to reach even the farest place in the universe. Our broader knwoledge is included in this game, after every turn you get a piece of information.
 
-## Moments of Flogons 
+## Moments of Flogons
 
 Deep Space Mining
 
@@ -90,24 +93,6 @@ Wellness Pod
 ![](./public/mid/flogon4222.jpeg)
 
 The right solution is webviews!
-
-## Game Rule
-
-For the maximum profit need to be close the `RUN` score to :: `42`
-Under each step draw one card some help some cause problem, 
-and the profit depend on the solved problem score.
-Which is need to be a 42. If more you are fail. That's all.
-This is a good plane, but at the end we going to another direction.
-
-- open the app
-- make a few stepp on the table
-- facing some story element
-- finally get a badges, coins, image
-- have option to listen a story of Flogon
-- mem generation ?
-- [+] game animation
-- story animation
-- [+] need to play with a card?
 
 ## Flogon abilities:
 - dream travel with quantum symmetry
@@ -145,25 +130,6 @@ export default defineConfig({
 });
 ```
 
-## Content Security Policy on Reddit
-
-```
-HTTP header
-default-src: 'self'
-form-action: 'none'
-object-src: 'none'
-script-src: 'self', webview.devvit.net, webview-dev.devvit.net, 'wasm-unsafe-eval'
-style-src: 'self', webview.devvit.net, webview-dev.devvit.net, 'unsafe-inline'
-font-src: 'self', webview.devvit.net, webview-dev.devvit.net, *.redditmedia.com, *.redditstatic.com, fonts.gstatic.com, data:, blob:
-frame-ancestors: 'self', *.reddit.com, *.snooguts.net, *.snoo.dev
-connect-src: 'self', webview.devvit.net, webview-dev.devvit.net, *.redditmedia.com, *.redditstatic.com, *.redd.it, blob:
-img-src: 'self', webview.devvit.net, webview-dev.devvit.net, *.redditmedia.com, *.redditstatic.com, *.redd.it, data:, blob:
-media-src: 'self', webview.devvit.net, webview-dev.devvit.net, *.redditmedia.com, *.redditstatic.com, *.redd.it, data:, blob:
-worker-src: 'self', webview.devvit.net, webview-dev.devvit.net, data:, blob:
-report-to: csp
-report-uri: https://w3-reporting-csp.reddit.com/reports
-```
-
 ## Video Generation
 
 Maybe chineese AI video generation will be worth.
@@ -180,9 +146,14 @@ Devvit.addCustomPostType({
   name: '',
   render: context => {}
 })
-``` 
+```
 ```js
 await redis.hset(myPostId, {[index.toString()]: ....})
 
 await redis.hgetall(myPostId);
 ```
+
+## Redit Chanels
+I don't know how working the reddit channel moderators decision, all of my post is deleted and I really don't know the real reason, even if I just ask a question. Bit Absurd. At least someone answered to my trailer as no human touch part of it, which is really not true. But I don't have a time to arguing pro or const. That is a bit uppset me.
+
+The Devvit Webview communication I did not able to setup. But I am run out of times, so I will focus to the AWS hackhaton. Right now 2024.12.29 night.

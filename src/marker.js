@@ -130,7 +130,7 @@
           case /\{\%\s*([^%]+)\s*\%\}/.test(line):
             return line.replaceAll(
               /(\{\%\s+)([^%]+)(\s+\%\})/g,
-              `x`
+              `globalThis.finalScore`
             )
           default:
             return inlineMarkdown(line);
@@ -142,30 +142,25 @@
     return colorCode;
   }
 
-
-const whenDomReady = () => {
+export const setupMarkerViews = () => {
   customElements.define('markdown-view', class extends HTMLElement {
     constructor() {
       super();
-      const source = document.querySelector('textarea').value;
-      globalThis.so = source;
-      this.innerHTML = markdownParser(source);
+      const source = this.getAttribute('source');
+      if (source) {
+        // console.log('markdown ::', source);
+        this.loadMarkdown(source);
+      }
+    }
+
+    loadMarkdown (file) {
+      fetch(file)
+        .then(r => r.text())
+        .then(md => this.changeContent(md))
     }
 
     changeContent(source) {
       this.innerHTML = markdownParser(source);
     }
   });
-
-  const markdownView = document.querySelector('markdown-view');
-  const markdownEditor = document.querySelector('textarea');
-
-  fetch('README.md').then(r => r.text()).then(md => markdownView.changeContent(md))
-
-  markdownEditor.addEventListener("input", e => {
-    e.stopPropagation();
-    markdownView.changeContent(e?.target?.value);
-  })
 };
-
-window.addEventListener('DOMContentLoaded', whenDomReady);

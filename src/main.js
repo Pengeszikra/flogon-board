@@ -2,12 +2,44 @@ import { fragment, signal } from './old-bird-soft';
 import {assetList} from './shoot';
 import {assets} from './asset';
 import {scifiUI} from './ui-elements';
+import {setupMarkerViews} from "./marker";
+
+let scroll = 0;
+const tableSpeed = 2;
+const HIDDEN = "hidden";
+
+/** 
+ * @typedef {{
+*  id: string
+*  crd: HTMLElement
+*  order: number
+*  score: number
+*  power: number
+*  isInHand: Boolean
+* }} Card 
+*/
+
+/** 
+ * @typedef {{
+ *  run: number | null
+ *  score: number
+ *  scoreTo: number
+ *  deck: Card[]
+ *  opponent: Card[]
+ *  itIsOver: boolean
+ *  scrollSpeed: number
+ *  img: string
+ * }} State 
+ */
 
 const initialState = {
   run: 0,
   score: 0,
   scoreTo: 0,
   deck: [],
+  itIsOver: false,
+  scrollSpeed: tableSpeed,
+  img: "",
 }
 
 const toolInitState = { 
@@ -19,23 +51,17 @@ const toolInitState = {
          // which is depend on main font size, currently: 10px;
   n: 2,  // less importan the 2 is always seems good.
          // figure out by number tweak
-  scrollSpeed: 0,
 };
-
-let scroll = 0;
-const tableSpeed = 4;
-const HIDDEN = "hidden";
 
 const spriteBgImg = index => `url(${spriteSheetList[index]})`;
 
 const dice = (side = 6) => Math.random() * side + 1 | 0;
-// const rnd = (side = 6) => Math.random() * side | 0;
 
 const drawSprite = ({
   x, y, w, h, 
   m = toolInitState.m, 
   n = toolInitState.n, 
-  sheetIndex =0
+  sheetIndex = 0
 }) => (frg) => {
   frg.style.width = `${w}rem`;
   frg.style.height = `${h}rem`;
@@ -46,14 +72,14 @@ const drawSprite = ({
 }
 
 const toolRender = (tState) => {
-  const {x, y, w, h, m, n, sheetIndex, scrollSpeed} = tState;
+  const {x, y, w, h, m, n, sheetIndex} = tState;
   sel.style.left =  `calc(${x}px - ${w/2}rem)`;
   sel.style.top =  `calc(${y}px - ${h/2}rem)`;
   sel.style.width = `${w}rem`;
   sel.style.height = `${h}rem`;
   sprite.style.backgroundImage = spriteBgImg(tool.sheetIndex);
   drawSprite(tState)(frg);
-  log({m,n, sheetIndex, scrollSpeed})
+  log({m,n, sheetIndex})
 }; 
 
 const storeSprite = () => {
@@ -65,33 +91,41 @@ const storeSprite = () => {
   localStorage.setItem('-shoot-', JSON.stringify(shoot));
 }
 
-const render = (state, ...rest) => {;
-  scoreIndicator.innerText = state.run;
+/** @type {(state:State) => void} */
+const render = (state) => {;
   highScore.innerText = state.scoreTo;
+  const {score, run, img, scrollSpeed} = state;
+  log({score, run, img, scrollSpeed})
 } 
 
 const state = signal(render)(initialState);
 const tool = signal(toolRender)(toolInitState);
 
+setupMarkerViews();
+
+// globalThis.state = state;
+
 const questImageList = Array(295).fill('../mid/flogon')
   .map((fn, idx) => fn + (4000 + idx) + '.jpeg')
   .sort(_ => Math.random() - 0.5);
 
-  const spriteSheetList = Array(37).fill('../sheets/sprite-')
+const spriteSheetList = Array(37).fill('../sheets/sprite-')
   .map((fn, idx) => fn + (7000 + idx) + '.png')
 
 let counter = 0;
+
 const body = document.querySelector('body');
 const visual1 = document.querySelector('#visual-1');
 const sprite = document.querySelector('#sprite-sheet');
 const sel = document.getElementById('selector');
 const debug = document.getElementById('monitor');
-const title = document.querySelector('article');
 const nextButton = document.querySelector("button");
 nextButton.classList.add(HIDDEN)
-const scoreIndicator = document.querySelector("#score");
 const highScore = document.querySelector("#high-score");
 const desk = document.querySelector("#desk");
+const centerNumber = document.querySelector("#center-number");
+const topNumber = document.querySelector("#top-number");
+const headupDisplay = document.querySelector("#headup-display");
 
 const log = info => debug.innerText = JSON.stringify(info);
 
@@ -105,14 +139,12 @@ sprite.onmousemove = (e) => {
   // screenX, screenY, clientX, clientY, 
   tool.x = offsetX;
   tool.y = offsetY;
-} 
-
-const titleAnim = (goIn) => title.style.left = goIn ? '0' : '100vw' ;
+}
 
 const nextDay = () => {
-  state.run = 0;
   const img = questImageList[counter % questImageList.length];
-  
+  state.img = img;
+  console.log(`current BG is: ${img}`);
   visual1.style.backgroundImage = `url(${img})`;
   counter ++ ;
 };
@@ -123,37 +155,20 @@ const toggleUI = () => {
     : body.classList.add("bg-black");
   frg.classList.toggle(HIDDEN);
   sprite.classList.toggle(HIDDEN);
-  debug.classList.toggle(HIDDEN);
   sel.classList.toggle(HIDDEN);
   visual1.classList.toggle(HIDDEN);
-  // nextButton.classList.add(HIDDEN);
-  scoreIndicator.classList.add(HIDDEN);
-  highScore.classList.add(HIDDEN)
+  headupDisplay.classList.toggle(HIDDEN);
+
   desk.classList.toggle(HIDDEN);
 }
 
-nextButton.onclick = nextDay;
-nextDay();
-
-/** @type {HTMLElement} */
-document.querySelector("#left-side").onclick = () => tool.scrollSpeed = + tableSpeed;
-document.querySelector("#center-area").onclick = () => {
-  callCard();
-  tool.scrollSpeed = 0;
-}
-document.querySelector("#right-side").onclick = () => tool.scrollSpeed = - tableSpeed;
-
 document.addEventListener("keydown", 
-  /** @type {(e:KeyboardEvent) => void} */
-  (e) => {
-    const {key, altKey, ctrlKey, shiftKey} = e;
-    // const shortKey = {key, altKey, ctrlKey, shiftKey};
-    
-    // log(shortKey);
+  /** @type {(event:KeyboardEvent) => void} */
+  (event) => {
+    const {key} = event;
     switch (key) {
       case "c": return drag = !drag; 
-      case ",": return titleAnim(true);
-      case ".": return titleAnim(false);
+
       case "n": return nextDay();
       case "z": return toggleUI();
       case "[": return selectSheet(-1);
@@ -171,21 +186,51 @@ document.addEventListener("keydown",
       case "k": return tool.n ++;
       case "l": return tool.n --;
       case "v": return storeSprite();
-      case ";": return tool.scrollSpeed = + tableSpeed;
-      case "'": callCard(); return tool.scrollSpeed =   0;
-      case "\\": return tool.scrollSpeed = - tableSpeed;
+
+      case ",":
+      case ";": return interactionToLeft();
+
+      case " ":
+      case "'": return interactionCallCard();
+
+      case ".":
+      case "\\": return interactionToRight();
     }
   }
 );
+
+const interactionToLeft = () => {
+  state.scrollSpeed = ( state.scrollSpeed === 0 ) 
+  ? + tableSpeed 
+  : 0
+  ;
+};
+
+const interactionToRight = () => {
+  state.scrollSpeed = ( state.scrollSpeed === 0 )
+    ? - tableSpeed 
+    : 0
+    ; 
+};
+
+const interactionCallCard = () => {
+  callCard();
+  state.scrollSpeed = 0;
+};
+
+/** @type {HTMLElement} */
+document.querySelector("#left-side").onclick = interactionToLeft;
+document.querySelector("#center-area").onclick = interactionCallCard;
+document.querySelector("#right-side").onclick = interactionToRight;
 
 const callCard = () => {
   const [id] = centerCard() || [];
   try {
     state.deck[id].isInHand = false;
     const who = state.deck[id];
-    return cardTryToEscape(who);
+    return callCardToPlay(who);
   } catch (error) { 
-    // E N D
+    state.itIsOver = true;
   }
 }
 
@@ -201,58 +246,105 @@ const frg = fragment("#mob-o", "#gallery", "frg-2000");
 frg.style.position = 'relative';
 frg.classList.add(HIDDEN);
 
-/** 
- * @typedef {{
- *  id: string
- *  crd: HTMLElement
- *  order: number
- *  score: number
- *  isInHand: Boolean
- * }} Card 
- */
 
-state.deck = Object.fromEntries(Array(23).fill(0).map((_, idx) => {
-  const id = `crd-${9000 + idx}`;
+const shuffle23 = () => Array(23)
+  .fill(0)
+  .map((_, idx) => idx)
+  .sort(() => Math.random() - .5);
+
+const shuffledSet = shuffle23();
+
+state.deck = Object.fromEntries(shuffledSet.map((value, idx) => {
+  const id = `crd-${9000 + value}`;
   const crd = fragment("#card", "#desk", id);
-  drawSprite(assetList[idx])(crd);
+  drawSprite(assetList[value])(crd);
   const order = idx * 16 - (16 * 12);
   crd.style.transform = `translateX(${order}rem) translateY(22rem) scale(3)`;
-  crd.onclick = () => state.run += dice(9);
   const score = dice(50) * 10 + 10;
-  return [id, {crd, order, score,  isInHand: true}];
+  const power = value - 11
+  crd.querySelector('div').innerText = power;
+  return [id, {crd, order, score, power,  isInHand: true}];
 }));
 
-const flyOut = (x) => [
-  `translateX(${x}rem) translateY(-22rem) scale(3) rotateX(-50deg)    translateZ(-2rem)`, 
-  `translateX(${x}rem) translateY(-22rem) scale(3) translateZ(-4rem)  rotateX(-60deg)`,
-  `translateX(${x}rem) translateY(-22rem) scale(3) translateZ(20rem)  rotateX(-80deg)`,
-  `translateX(${x}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
-  `translateX(${x}rem) translateY(8rem)   scale(3) translateZ(20rem)  rotateX(-60deg)`,
-  `translateX(${x}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-55deg)`,
-  `translateX(${x}rem) translateY(12rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
-  `translateX(${x}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-65deg)`,
-  `translateX(${x}rem) translateY(70rem)  scale(3) translateZ(-80rem) rotateX(-60deg)`,
+const opponentSet = shuffle23();
+
+state.opponent = opponentSet.map((value, idx) => {
+  const id = `opp-${8000 + value}`;
+  const opp = fragment("#card", "#desk", id);
+  drawSprite(assetList[value])(opp);
+  const order = 0;
+  opp.style.transform = `translateX(${order}rem) translateY(-11rem) scale(3) translateZ(${idx/6}rem`;
+  // const score = dice(50) * 10 + 10;
+  const power = value - 11
+  opp.querySelector('div').innerText = power;
+  return {opp, order, power, idx, value};
+});
+
+const flyOut = (order) => [
+  `translateX(${order}rem) translateY(-22rem) scale(3) translateZ(-2rem)  rotateX(-50deg)`, 
+  `translateX(${order}rem) translateY(-22rem) scale(3) translateZ(-4rem)  rotateX(-60deg)`,
+  `translateX(${order}rem) translateY(-22rem) scale(3) translateZ(20rem)  rotateX(-80deg)`,
+  `translateX(${order}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
+  `translateX(${order}rem) translateY(8rem)   scale(3) translateZ(20rem)  rotateX(-60deg)`,
+  `translateX(${order}rem) translateY(9rem)  scale(3) translateZ(20rem)  rotateX(-55deg)`,
+  `translateX(${order}rem) translateY(9rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
+  `translateX(${order}rem) translateY(10rem)  scale(3) translateZ(20rem)  rotateX(-60deg)`,
+  `translateX(${order}rem) translateY(11rem) scale(3) translateZ(0rem)  rotateX(0deg)`, 
+  `translateX(${order}rem) translateY(11rem) scale(3) translateZ(0rem)  rotateX(0deg)`, 
 ]
-  
+
+const flyToMatch = (order) => [
+  `translateX(0rem)              translateY(-22rem) scale(3) translateZ(7rem)   rotateX(-50deg)   `, 
+  `translateX(${order/1.3}rem)   translateY(0rem)   scale(3) translateZ(12rem)   rotateX(-60deg)`,
+  `translateX(${order/1.1}rem)   translateY(35rem)  scale(3) translateZ(14rem)  rotateX(-60deg)`,
+  `translateX(${order * 1.1}rem)   translateY(39rem)  scale(3) translateZ(15rem)  rotateX(-60deg)`,
+  `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
+  `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
+  `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
+  `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
+  `translateX(${order}rem)       translateY(16rem)  scale(3) translateZ(17rem)  rotateX(-60deg)`,
+  `translateX(${order}rem)       translateY(22rem)  scale(3) translateZ(1rem)  rotateX(0deg)`,
+]
+
 /** @type {(who:Card) => void} */
-const cardTryToEscape = async(who) => {
+const callCardToPlay = async(who) => {
   const cardSpeed = 200;
-  const {crd, order} = who;
+  const {crd, order, power} = who;
+  const {opp, power: opw} = state.opponent.pop();
+  // console.log(opp, opw);
   const sequence = [...flyOut(order)];
+  const matchSeq = [...flyToMatch(order)];
   const stop = setInterval(() => {
     const ani = sequence.shift();
+    const aoo = matchSeq.shift();
     crd.style.transition = `transform ${cardSpeed}ms linear`;
+    opp.style.transition = `transform ${cardSpeed}ms linear`;
     crd.style.transform = ani;
-    if (sequence.length === 7) { state.score += dice(10) * 10;}
-    if (!sequence.length) {clearInterval(stop)}
+    opp.style.transform = aoo; 
+    if (sequence.length === 4) { 
+      state.score += calcScore(power, opw);
+    }
+    if (!sequence.length) { clearInterval(stop) }
   }, cardSpeed);
 };
 
+/** @type {(play:number, base:number) => number} */
+const calcScore = (play, base) => {
+  const MULTIPLIER = 100;
+  switch (true) {
+    case  (play > 0 && base > 0 && play % 2 !== base % 2): return MULTIPLIER * (+ play + base);
+    case  (play < 0 && base < 0 && play % 2 === base % 2): return MULTIPLIER * (- play - base);
+    case  (play === - base): return 2 * MULTIPLIER * Math.abs(play - base);
+    case  (play === 0 ): return 5 * MULTIPLIER * Math.abs(base);
+    case  (base === 0 ): return 5 * MULTIPLIER * Math.abs(play);
+    default: return 0;
+  }
+}
+
 [
   ...assets,
-  // ...assets,
-  // ...assets,
-  // ...scifiUI,
+  ...assets,
+  ...assets,
   // ...assets
 ].map((src, idx) => {
   const frg = fragment("#mob", "#desk", `frg-${5000 + idx}`);
@@ -280,9 +372,6 @@ scifiUI.map((src, idx) => {
   `;
 })
 
-
-
-
 const deskMotion = (x) => {
    const trans = `
     perspective(60vh)
@@ -297,13 +386,14 @@ const deskMotion = (x) => {
 }
 
 setInterval(() => {
-  if (
-    !tool.scrollSpeed ||
-    scroll - tool.scrollSpeed < - 1200 || 
-    scroll - tool.scrollSpeed > 1700
-  ) return;
-  deskMotion(scroll -= tool.scrollSpeed)
-  state.run = -scroll;
+  if ( !state.scrollSpeed ) return;
+  if (scroll - state.scrollSpeed < - 1200 || 
+    scroll - state.scrollSpeed > 1700
+  ) {
+    state.scrollSpeed = -state.scrollSpeed;
+    state.run = dice(21) - 11;
+  }
+  deskMotion(scroll -= state.scrollSpeed)
 }, 5);
 
 body.onmouseleave = () => {
@@ -311,12 +401,18 @@ body.onmouseleave = () => {
 }
 
 const highScoreAnim = () => {
-  if (state.scoreTo < state.score) state.scoreTo += 5;  
+  if (state.scoreTo < state.score) state.scoreTo += 50;
+  if (state?.opponent?.length) {
+    topNumber.innerHTML = state.opponent.at(-1).power;
+  }
+  const [id] = centerCard() || [];
+  if (state?.deck?.[id]) {
+    centerNumber.innerHTML = state.deck[id].power;
+  }
+
   requestAnimationFrame(highScoreAnim);
 }
 requestAnimationFrame(highScoreAnim);
-
-// new Audio('../media/James-8000.mp3').play();
 
 const closeToCenter = (pos, center) => Math.abs(center - (pos.left + pos.width / 2));
 /** @type {() => Card} */
@@ -325,7 +421,12 @@ const centerCard = () => {
   const inHand = Object
     .entries(state.deck)
     .filter(([,{isInHand}]) => isInHand)
-  if (inHand.length < 1) return; // E N D
+  if (inHand.length < 1) {
+    const endScreen = document.querySelector('#end-screen');
+    endScreen.classList.remove(HIDDEN);
+    endScreen.querySelector('#score-board').innerHTML = `score: ${state.score}`;
+    return
+  }
   return inHand
     .reduce((col, itm) => {
       const itmPos = closeToCenter(itm[1].crd.getBoundingClientRect(), center);
@@ -335,3 +436,26 @@ const centerCard = () => {
         : col
     });
 }
+
+const rulePage = document.querySelector('#game-rule');
+rulePage.querySelector('button').onclick = () => rulePage.classList.add(HIDDEN);
+
+nextDay();
+
+window.addEventListener('message', (e) => {
+  try {
+    const {data} = e;
+    log(data)
+    // console.log('message channel --> ', e);
+  } catch (error) {
+    console.error(error);
+  }
+
+  // if (type === 'devvit-message') {
+  //   const { message } = data;
+  //   if (message.type === 'updateHighScores') {
+  //     // Update your UI with the new high scores
+  //     updateHighScoresDisplay(message.data.highScores);
+  //   }
+  // }
+});

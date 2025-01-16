@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 html {
+  /* font-size: 2.5vmin; */
   /* Disables gestures like pinch-to-zoom */
-  font-size: 2.5vmin;
   touch-action: manipulation;
 }
 body {

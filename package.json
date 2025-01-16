@@ -1,5 +1,5 @@
 {
-  "private": true,
+  "private": false,
   "name": "flogon-board",
   "author": "Peter Vivo <pengeszikra@gmail.com>",
   "version": "0.0.0",
