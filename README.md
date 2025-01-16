@@ -1,5 +1,9 @@
 ## Game Rule
 
+## The Series next game is...
+[FLOGON-GALAXY](https://flogon-galaxy.vercel.app/)
+Their repo next of it. And that is also contain this game none redit version.
+
 ### The setup
 On the long table the player have 23 cards in a line. On center have a same deck of 23 card shuffled.
 This is a single player dexterity based table top game. The main goal is get as much score as possible.
@@ -32,14 +36,14 @@ export default Devvit;
 - [+] test the game
 - [-] `make image switch animation` when change scroll direction then change the image.
 - [?] Select a proper background images
-- [-] make a table where the player can move on 
+- [-] make a table where the player can move on
 - [...] connect my program to a `devvit`
-  
+
   - [-] `create content`
   - [-] Try to use a database for something.
   - [-] Make a post message with a image after run.
 - [...] New Game without reload
-- [+] create how can I play with this game 
+- [+] create how can I play with this game
 - [+] implement `M A R K E R` for info
 - [-] create a sage who can tell about Flogons
 - [+] create intro : Pitch
@@ -54,7 +58,7 @@ Flogons on the Bridge! is a chaotic, hilarious social tabletop game where every 
 Flogons is a most succesfull space trader in the galaxy.
 Their secret skill give a power to reach even the farest place in the universe. Our broader knwoledge is included in this game, after every turn you get a piece of information.
 
-## Moments of Flogons 
+## Moments of Flogons
 
 Deep Space Mining
 
@@ -142,7 +146,7 @@ Devvit.addCustomPostType({
   name: '',
   render: context => {}
 })
-``` 
+```
 ```js
 await redis.hset(myPostId, {[index.toString()]: ....})
 
